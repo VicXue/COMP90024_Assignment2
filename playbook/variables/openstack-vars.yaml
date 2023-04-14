@@ -8,17 +8,17 @@ instance_network: qh2-uom-internal
 # Volume
 volumes:
   - vol_name: vol-data-1
-    vol_size: 100
+    vol_size: 130
   - vol_name: vol-data-2
-    vol_size: 100
+    vol_size: 130
   - vol_name: vol-data-3
-    vol_size: 100
+    vol_size: 130
   - vol_name: vol-docker-1
-    vol_size: 50
+    vol_size: 40
   - vol_name: vol-docker-2
-    vol_size: 30
+    vol_size: 10
   - vol_name: vol-docker-3
-    vol_size: 30
+    vol_size: 10
 
 cidr_security_groups:
   - name: ssh
