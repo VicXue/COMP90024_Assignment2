@@ -1,0 +1,7 @@
+- name: Join the swarm
+  become: yes
+  community.docker.docker_swarm:
+    state: join
+    advertise_addr: "{{ ansible_host }}"
+    join_token: "{{ hostvars[groups['master'].0].worker_join_token }}"
+    remote_addrs: "{{ hostvars[groups['master'].0].manager_addr }}"

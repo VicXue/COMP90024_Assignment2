@@ -1,0 +1,22 @@
+- name: Create volumes
+  openstack.cloud.volume:
+    availability_zone: "{{ availability_zone }}"
+    size: "{{ item.vol_size }}"
+    display_name: "{{ item.vol_name }}"
+    wait: yes
+    timeout: 600
+    state: present
+  loop: '{{ volumes }}'
+  register: os_vol
+
+- name: Print information
+  ansible.builtin.debug: 
+    var: os_vol
+
+- name: Create a list of volume ids 
+  ansible.builtin.set_fact:
+    os_vol_ids: '{{ os_vol_ids|default([]) + [item.volume.id] }}'
+  loop: '{{ os_vol.results }}'
+
+- ansible.builtin.debug:
+    msg: "Volume {{ os_vol_ids }} have been created."

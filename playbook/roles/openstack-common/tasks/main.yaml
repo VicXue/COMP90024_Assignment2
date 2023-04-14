@@ -1,0 +1,12 @@
+- name: Install pip
+  become: yes
+  ansible.builtin.apt:
+    name: ["python3-dev", "python3-setuptools", "python3-pip"]
+    allow_unauthenticated: true
+    update_cache: yes
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install Openstack
+  ansible.builtin.pip:
+    name: ["openstacksdk==0.61"]
+    state: latest

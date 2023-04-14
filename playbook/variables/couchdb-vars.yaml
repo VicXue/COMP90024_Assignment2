@@ -1,0 +1,6 @@
+couchdb_dir: couchdb_docker
+couchdb_stack_name: couchdb_stack
+couchdb_service_name: couchdb
+couchdb_log_dir: /var/lib/docker/logs/coudchdb
+couchdb_user: admin
+couchdb_pass: DbPassword.1

@@ -1,0 +1,63 @@
+# - name: 'Cluster Setup 1'
+#   uri:
+#     url: 'http://{{ansible_host}}:5984/_cluster_setup'
+#     method: POST
+#     body:
+#       action: enable_cluster
+#       bind_address: 0.0.0.0
+#       username: "{{ couchdb_user }}"
+#       password: "{{ couchdb_pass }}"
+#       port: 5984
+#       node_count: '3'
+#       remote_node: "{{ item }}"
+#       remote_current_user: "{{ couchdb_user }}"
+#       remote_current_password: "{{ couchdb_pass }}"
+#     body_format: json
+#     headers:
+#       Content-Type: application/json
+#     url_username: "{{ couchdb_user }}"
+#     url_password: "{{ couchdb_pass }}"
+#   register: result
+#   with_items: "{{ groups['workers'] }}"
+
+# - name: 'Cluster Setup 2'
+#   uri:
+#     url: 'http://{{ansible_host}}:5984/_cluster_setup'
+#     method: POST
+#     body: '{"action": "add_node", "host":"{{ item }}", "port": 5984, "username": "{{ couchdb_user }}", "password":"{{ couchdb_pass }}"}'
+#     headers:
+#       Content-Type: application/json
+#     url_username: "{{ couchdb_user }}"
+#     url_password: "{{ couchdb_pass }}"
+#   register: result
+#   with_items: "{{ groups['workers'] }}"
+
+# - name: 'Cluster Setup Complete'
+#   uri:
+#     url: 'http://{{ansible_host}}:5984/_cluster_setup'
+#     method: POST
+#     body:
+#       action: finish_cluster
+#     body_format: json
+#     headers:
+#       Content-Type: application/json
+#     url_username: "{{ couchdb_user }}"
+#     url_password: "{{ couchdb_pass }}"
+#   register: result
+
+- name: post to consul
+  become: yes
+  shell: |
+    curl -X POST -H "Content-Type: application/json" http://{{ couchdb_user }}:{{ couchdb_pass }}@{{ansible_host}}:5984/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "{{ couchdb_user }}", "password":"{{ couchdb_pass }}", "port": 5984, "node_count": "3", "remote_node": "{{ item }}", "remote_current_user": "{{ couchdb_user }}", "remote_current_password": "{{ couchdb_pass }}" }'
+  with_items: "{{ groups['workers'] }}"
+
+- name: post to consul
+  become: yes
+  shell: |
+    curl -X POST -H "Content-Type: application/json" http://{{ couchdb_user }}:{{ couchdb_pass }}@{{ansible_host}}:5984/_cluster_setup -d '{"action": "add_node", "host":"{{ item }}", "port": 5984, "username": "{{ couchdb_user }}", "password":"{{ couchdb_pass }}"}'
+  with_items: "{{ groups['workers'] }}"
+
+- name: post to consul
+  become: yes
+  shell: |
+    curl -X POST -H "Content-Type: application/json" http://{{ couchdb_user }}:{{ couchdb_pass }}@{{ ansible_host }}:5984/_cluster_setup -d '{"action": "finish_cluster"}'

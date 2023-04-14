@@ -1,0 +1,62 @@
+- name: Openstack Server Setup
+  hosts: localhost
+  vars_files:
+    - variables/openstack-vars.yaml
+  gather_facts: true
+  roles:
+    - role: openstack-common
+    - role: openstack-volumes
+    - role: openstack-security-group
+    - role: openstack-instances
+
+- name: Swarm Host Common Setup
+  hosts: master:workers
+  gather_facts: false
+  roles:
+    - role: host-common
+    - role: host-volumes
+    - role: docker-common
+
+- name: Swarm Master Node Setup
+  hosts: master
+  gather_facts: false
+  roles:
+    - role: swarm-master
+
+- name: Swarm Workers Node Setup
+  hosts: workers
+  gather_facts: false
+  roles:
+    - role: swarm-workers
+
+- name: CouchDB Docker Common Setup
+  hosts: master:workers
+  vars_files:
+    - variables/couchdb-vars.yaml
+  gather_facts: false
+  roles:
+    - role: couchdb-common
+
+- name: CouchDB Stack Deploy
+  hosts: master
+  vars_files:
+    - variables/couchdb-vars.yaml
+  gather_facts: false
+  roles:
+    - role: couchdb-stack-deploy
+
+- name: CouchDB Cluster Setup
+  hosts: workers:master
+  vars_files:
+    - variables/couchdb-vars.yaml
+  gather_facts: false
+  roles:
+    - role: couchdb-cluster-setup
+
+- name: CouchDB Cluster Join
+  hosts: master
+  vars_files:
+    - variables/couchdb-vars.yaml
+  gather_facts: false
+  roles:
+    - role: couchdb-cluster-join

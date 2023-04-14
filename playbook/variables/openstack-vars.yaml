@@ -1,0 +1,87 @@
+# Common vars
+availability_zone: melbourne-qh2-uom
+instance_flavor: uom.mse.1c4g
+instance_image: bbaf16f8-2484-48d7-b455-42209cc4b8d2
+instance_key_name: gp3_key
+instance_network: qh2-uom-internal
+
+# Volume
+volumes:
+  - vol_name: vol-data-1
+    vol_size: 100
+  - vol_name: vol-data-2
+    vol_size: 100
+  - vol_name: vol-data-3
+    vol_size: 100
+  - vol_name: vol-docker-1
+    vol_size: 50
+  - vol_name: vol-docker-2
+    vol_size: 30
+  - vol_name: vol-docker-3
+    vol_size: 30
+
+cidr_security_groups:
+  - name: ssh
+    description: "For SSH connection"
+    protocol: tcp
+    port_range_min: 22
+    port_range_max: 22
+    remote_ip_prefix: 0.0.0.0/0
+  - name: http
+    description: "For web connection"
+    protocol: tcp
+    port_range_min: 80
+    port_range_max: 80
+    remote_ip_prefix: 0.0.0.0/0
+  - name: db_ui
+    description: "DB UI port"
+    protocol: tcp
+    port_range_min: 5984
+    port_range_max: 5984
+    remote_ip_prefix: 0.0.0.0/0
+  
+group_security_groups:
+  - name: db_tcp
+    description: "For database cluster connection"
+    protocol: tcp
+    port_range_min: 9100
+    port_range_max: 9200
+    remote_group : db_tcp
+  - name: db_tcp
+    description: "Standard clustered port for all HTTP API requests"
+    protocol: tcp
+    port_range_min: 5984
+    port_range_max: 5984
+    remote_group : db_tcp
+  - name: db_tcp
+    description: "Erlang port mapper daemon"
+    protocol: tcp
+    port_range_min: 4369
+    port_range_max: 4369
+    remote_group : db_tcp
+  - name: docker_swarm
+    description: "For communication with and between manager nodes"
+    protocol: tcp
+    port_range_min: 2377
+    port_range_max: 2377
+    remote_group : docker_swarm
+  - name: docker_swarm
+    description: "TCP/UDP for overlay network node discovery"
+    protocol: tcp
+    port_range_min: 7946
+    port_range_max: 7946
+    remote_group : docker_swarm
+  - name: docker_swarm
+    description: "UDP (configurable) for overlay network traffic"
+    protocol: udp
+    port_range_min: 4789
+    port_range_max: 4789
+    remote_group : docker_swarm
+
+instances:
+  - name: master
+    volumes: ["vol-data-1", "vol-docker-1"]
+  - name: worker-1
+    volumes: ["vol-data-2", "vol-docker-2"]
+  - name: worker-2
+    volumes: ["vol-data-3", "vol-docker-3"]

@@ -1,0 +1,4 @@
+- name: Enable Cluster
+  become: yes
+  shell: |
+    curl -X POST -H "Content-Type: application/json" http://{{ couchdb_user }}:{{ couchdb_pass }}@127.0.0.1:5984/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "{{ couchdb_user }}", "password":"{{ couchdb_pass }}", "node_count":"3"}'

@@ -1,0 +1,14 @@
+- name: Deploy stack from a compose file
+  become: yes
+  community.docker.docker_stack:
+    state: present
+    name: "{{couchdb_stack_name}}"
+    compose:
+      - "{{ couchdb_dir }}/docker-compose.yaml"
+
+- name: Get info from a service
+  become: yes
+  community.docker.docker_swarm_service_info:
+    name: "{{couchdb_stack_name}}_{{couchdb_service_name}}"
+  register: result
+

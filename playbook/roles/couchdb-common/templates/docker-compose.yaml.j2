@@ -1,0 +1,26 @@
+version: '3.7'
+ 
+services:
+  {{couchdb_service_name}}:
+    environment:
+      NODENAME: "{{ansible_host}}"
+      COUCHDB_ERLANG_COOKIE: "IDuTaPTH96Id/hjc+xFKGQljeffXH3IcGt4d9RbowxI="
+    image: couchdb:latest
+    deploy:
+      mode: global
+    networks:
+      - couchdb
+    volumes:
+      - /data:/opt/couchdb/data
+      - /var/lib/docker/logs/coudchdb:/opt/couchdb/log
+      - /home/ubuntu/{{couchdb_dir}}/config:/opt/couchdb/etc/local.d
+    ports:
+      - "5984:5984"
+      - "9100:9100"
+      - "4369:4369"
+networks:
+  couchdb:
+    driver: overlay 
+
+
+
