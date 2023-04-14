@@ -7,6 +7,15 @@
     recurse: yes
     state: directory
 
+- name: Create CouchDB directory
+  become: yes
+  ansible.builtin.file:
+    path: "{{ couchdb_dir }}/logs"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    recurse: yes
+    state: directory
+
 - name: Copy Docker Compose file to remote hosts
   become: yes
   ansible.builtin.template:
@@ -15,10 +24,18 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
 
-- name: Copy DB config file to remote hosts
+- name: Copy DB ini config file to remote hosts
   become: yes
   ansible.builtin.template:
     src: couchdb_config.ini.j2
     dest: "{{ couchdb_dir }}/config/couchdb_config.ini"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: Copy DB var file to remote hosts
+  become: yes
+  ansible.builtin.template:
+    src: vm.args.j2
+    dest: "{{ couchdb_dir }}/vm.args"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
