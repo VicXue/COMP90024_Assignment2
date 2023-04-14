@@ -330,4 +330,6 @@ pyrightconfig.json
 .history
 .ionide
 
+id_rsa*
+*.pub
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,pycharm,python,go,ansible
