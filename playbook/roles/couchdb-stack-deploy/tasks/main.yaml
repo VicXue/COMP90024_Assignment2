@@ -12,3 +12,10 @@
     name: "{{couchdb_stack_name}}_{{couchdb_service_name}}"
   register: result
 
+- name: Wait for database to be available
+  shell: curl http://{{ couchdb_user }}:{{ couchdb_pass }}@127.0.0.1:5984
+  register: result
+  until: result.stderr.find("Connection refused") == -1
+  retries: 20
+  delay: 30
+
