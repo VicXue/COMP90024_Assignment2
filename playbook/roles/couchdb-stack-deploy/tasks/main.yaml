@@ -6,16 +6,61 @@
     compose:
       - "{{ couchdb_dir }}/docker-compose.yaml"
 
-- name: Get info from a service
-  become: yes
-  community.docker.docker_swarm_service_info:
-    name: "{{couchdb_stack_name}}_{{couchdb_service_name}}"
-  register: result
+# - name: Get info from a service
+#   become: yes
+#   community.docker.docker_swarm_service_info:
+#     name: "{{couchdb_stack_name}}_{{couchdb_service_name}}"
+#   register: service_info
+
+# - name: Print service info
+#   ansible.builtin.debug:
+#     var: service_info
+
+# - name: Get info from a stack
+#   become: yes
+#   community.docker.docker_stack_task_info:
+#     name: "{{couchdb_stack_name}}"
+#   register: stack_info
+
+# - name: Print stack info
+#   ansible.builtin.debug:
+#     var: stack_info
 
 - name: Wait for database to be available
   shell: curl http://{{ couchdb_user }}:{{ couchdb_pass }}@127.0.0.1:5984
   register: result
   until: result.stderr.find("Connection refused") == -1
-  retries: 20
-  delay: 30
+  retries: 10
+  delay: 10
 
+# - name: "Get docker network info"
+#   become: yes
+#   docker_network_info:
+#     name: "{{ couchdb_network_name }}"
+#   register: net_info
+
+# - name: Print net info
+#   ansible.builtin.debug:
+#     var: net_info
+
+# - name: "Get docker container info"
+#   become: yes
+#   docker_container_info:
+#     name: "{{ item }}"
+#   register: container_info
+#   loop: "{{ net_info.network.Containers.keys() }}"
+
+# - name: Print net info
+#   ansible.builtin.debug:
+#     var: "{{ container_info.results }}"
+
+# - name: Store Docker Container Names
+#   become: yes
+#   ansible.builtin.set_fact:
+#     docker_container_names: '{{ docker_container_name | default([])+ [ item ] }}'
+#   loop: "{{ container_info.results|json_query('[].container.Name') }}"
+#   when: "item.startswith('{{couchdb_stack_name}}')"
+
+# - name: Print stack info
+#   ansible.builtin.debug:
+#     var: docker_container_names

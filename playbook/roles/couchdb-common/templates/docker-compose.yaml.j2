@@ -3,23 +3,23 @@ version: '3.7'
 services:
   {{couchdb_service_name}}:
     environment:
-    #  - NODENAME=${NODENAME}
-      - COUCHDB_ERLANG_COOKIE=IDuTaPTH96Id/hjc+xFKGQljeffXH3IcGt4d9RbowxI=
+      NODENAME: {% raw %}"{{.Service.Name}}.{{.Task.Slot}}.{{.Task.ID}}"{% endraw %} 
+      COUCHDB_ERLANG_COOKIE: "IDuTaPTH96Id/hjc+xFKGQljeffXH3IcGt4d9RbowxI="
     image: couchdb:latest
     deploy:
       mode: global
     networks:
-      - couchdb
+      - {{couchdb_network_name}}
     volumes:
       - /data:/opt/couchdb/data
       - /home/ubuntu/{{couchdb_dir}}/logs:/opt/couchdb/log
       - /home/ubuntu/{{couchdb_dir}}/config:/opt/couchdb/etc/local.d
       - /home/ubuntu/{{couchdb_dir}}/vm.args:/opt/couchdb/etc/vm.args
-    #entrypoint: /bin/bash -c "echo -e '-kernel inet_dist_listen_max 9200\\n-kernel inet_dist_use_interface {0,0,0,0}' >> /opt/couchdb/etc/vm.args && tini -- /docker-entrypoint.sh /opt/couchdb/bin/couchdb"
     ports:
       - "5984:5984"
       - "9100:9100"
       - "4369:4369"
+    #hostname: {% raw %}"{{.Service.Name}}-{{.Task.Slot}}"{% endraw %} 
 networks:
-  couchdb:
+  {{couchdb_network_name}}:
     driver: overlay 
