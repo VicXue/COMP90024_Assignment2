@@ -1,52 +1,4 @@
-# - name: 'Cluster Setup 1'
-#   uri:
-#     url: 'http://{{ansible_host}}:5984/_cluster_setup'
-#     method: POST
-#     body:
-#       action: enable_cluster
-#       bind_address: 0.0.0.0
-#       username: "{{ couchdb_user }}"
-#       password: "{{ couchdb_pass }}"
-#       port: 5984
-#       node_count: '3'
-#       remote_node: "{{ hostvars[item].docker_container_names }}"
-#       remote_current_user: "{{ couchdb_user }}"
-#       remote_current_password: "{{ couchdb_pass }}"
-#     body_format: json
-#     headers:
-#       Content-Type: application/json
-#     user: "{{ couchdb_user }}"
-#     password: "{{ couchdb_pass }}"
-#   register: result
-#   with_items: "{{ groups['workers'] }}"
-
-# - name: 'Cluster Setup 2'
-#   uri:
-#     url: 'http://{{ansible_host}}:5984/_cluster_setup'
-#     method: POST
-#     body: '{"action": "add_node", "host":"{{ hostvars[item].docker_container_names }}", "port": 5984, "username": "{{ couchdb_user }}", "password":"{{ couchdb_pass }}"}'
-#     headers:
-#       Content-Type: application/json
-#     user: "{{ couchdb_user }}"
-#     password: "{{ couchdb_pass }}"
-#   register: result
-#   with_items: "{{ groups['workers'] }}"
-
-# - name: 'Cluster Setup Complete'
-#   uri:
-#     url: 'http://{{ansible_host}}:5984/_cluster_setup'
-#     method: POST
-#     body:
-#       action: finish_cluster
-#     body_format: json
-#     headers:
-#       Content-Type: application/json
-#     user: "{{ couchdb_user }}"
-#     password: "{{ couchdb_pass }}"
-#   register: result
-
-
-- name: setup couchdb cluster | step 1
+- name: setup couchdb cluster | Enable Cluster
   become: yes
   uri:
     url: http://{{ansible_host}}:5984/_cluster_setup
@@ -65,7 +17,7 @@
       Content-Type: "application/json"
   loop: "{{ groups['workers'] }}"
 
-- name: setup couchdb cluster | step 2
+- name: setup couchdb cluster | Add Node
   become: yes
   uri:
     url: http://{{ansible_host}}:5984/_cluster_setup
@@ -86,7 +38,7 @@
   retries: 60
   delay: 2
 
-- name: setup couchdb cluster | step 2.5
+- name: setup couchdb cluster | Check Availability
   become: yes
   uri:
     url: http://{{ansible_host}}:5984/
@@ -98,7 +50,7 @@
     return_content: yes
 
 
-- name: steup couchdb cluster | step 3 -- finish
+- name: steup couchdb cluster | Finish Cluster
   become: yes
   uri:
     url: http://{{ansible_host}}:5984/_cluster_setup
@@ -112,23 +64,32 @@
     body: "{\"action\": \"finish_cluster\"}"
     headers:
       Content-Type: "application/json"
+  register: cl_finish
 
+- name: Create _users DB 
+  become: yes
+  uri:
+    url: http://{{ansible_host}}:5984/_users
+    status_code: 201
+    method: PUT
+    user: "{{ couchdb_user }}"
+    password:  "{{ couchdb_pass }}"
+    force_basic_auth: yes
+    return_content: yes
+    headers:
+      Content-Type: "application/json"
+  when: cl_finish.status != 201
 
-
-
-# - name: Join Step 1
-#   become: yes
-#   shell: |
-#     curl -X POST -H "Content-Type: application/json" http://{{ couchdb_user }}:{{ couchdb_pass }}@{{ansible_host}}:5984/_cluster_setup -d '{"action": "enable_cluster", "bind_address":"0.0.0.0", "username": "{{ couchdb_user }}", "password":"{{ couchdb_pass }}", "port": 5984, "node_count": "3", "remote_node": "{{ item }}", "remote_current_user": "{{ couchdb_user }}", "remote_current_password": "{{ couchdb_pass }}" }'
-#   with_items: "{{ groups['workers'] }}"
-
-# - name: Join Step 1
-#   become: yes
-#   shell: |
-#     curl -X POST -H "Content-Type: application/json" http://{{ couchdb_user }}:{{ couchdb_pass }}@{{ansible_host}}:5984/_cluster_setup -d '{"action": "add_node", "host":"{{ item }}", "port": 5984, "username": "{{ couchdb_user }}", "password":"{{ couchdb_pass }}"}'
-#   with_items: "{{ groups['workers'] }}"
-
-# - name: Finalise Joining
-#   become: yes
-#   shell: |
-#     curl -X POST -H "Content-Type: application/json" http://{{ couchdb_user }}:{{ couchdb_pass }}@{{ ansible_host }}:5984/_cluster_setup -d '{"action": "finish_cluster"}'
+- name: Create _replicator DB 
+  become: yes
+  uri:
+    url: http://{{ansible_host}}:5984/_replicator
+    status_code: 201
+    method: PUT
+    user: "{{ couchdb_user }}"
+    password:  "{{ couchdb_pass }}"
+    force_basic_auth: yes
+    return_content: yes
+    headers:
+      Content-Type: "application/json"
+  when: cl_finish.status != 201
