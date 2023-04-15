@@ -21,7 +21,7 @@
 - name: Install docker
   become: yes
   ansible.builtin.apt:
-    name: ["docker-ce", "docker-ce-cli", "containerd.io", "docker-buildx-plugin", "docker-compose-plugin"]
+    name: ["docker-ce", "docker-ce-cli", "containerd.io", "docker-buildx-plugin", "docker-compose-plugin", "docker-compose"]
     state: latest
     update_cache: yes
 
