@@ -36,7 +36,7 @@
 # - name: "Get docker network info"
 #   become: yes
 #   docker_network_info:
-#     name: "{{ couchdb_network_name }}"
+#     name: "{{ overlay_network_name }}"
 #   register: net_info
 
 # - name: Print net info

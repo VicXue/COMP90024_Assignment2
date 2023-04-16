@@ -7,7 +7,7 @@
     - role: openstack-common
     - role: openstack-volumes
     - role: openstack-security-group
-    - role: openstack-instances
+    - role: openstack-instances    
 
 - name: Swarm Host Common Setup
   hosts: master:workers
@@ -29,10 +29,24 @@
   roles:
     - role: swarm-workers
 
+- name: Create overlay network
+  hosts: master
+  vars_files:
+    - variables/docker-vars.yaml
+  tasks:
+    - name: Create an overlay network
+      become: yes
+      docker_network:
+        name: "{{ overlay_network_name }}"
+        driver: "overlay"
+        attachable: true
+        scope: "swarm"
+
 - name: CouchDB Docker Common Setup
   hosts: master:workers
   vars_files:
     - variables/couchdb-vars.yaml
+    - variables/docker-vars.yaml
   gather_facts: false
   roles:
     - role: couchdb-common
