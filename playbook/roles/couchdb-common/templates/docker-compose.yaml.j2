@@ -9,7 +9,7 @@ services:
     deploy:
       mode: global
     networks:
-      - {{couchdb_network_name}}
+      - couchdb_network
     volumes:
       - /data:/opt/couchdb/data
       - /home/ubuntu/{{couchdb_dir}}/logs:/opt/couchdb/log
@@ -19,7 +19,9 @@ services:
       - "5984:5984"
       - "9100:9100"
       - "4369:4369"
-    #hostname: {% raw %}"{{.Service.Name}}-{{.Task.Slot}}"{% endraw %} 
+    hostname: {% raw %}"{{.Service.Name}}"{% endraw %} 
+
 networks:
-  {{couchdb_network_name}}:
-    driver: overlay 
+  couchdb_network:
+    name: {{overlay_network_name}}
+    external: true
