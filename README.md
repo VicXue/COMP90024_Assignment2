@@ -42,5 +42,5 @@ p.s. Due to the intrinsics of docker swarm, the CouchDB cluster may not finish i
     - [ ] Docker Container Deployment
     
 ## Demo
-CouchDB cluster is ready to play with. Go to MRC and find our project. You can use any instance's IP to access it. The url to the GUI is `<IP>::5984/_utils/`. Username and password can be found [here](/playbook/variables/couchdb-vars.yaml#L6-L7).
+CouchDB cluster is ready to play with. Go to MRC and find our project. You can use any instance's IP to access it. The url to the GUI is `<IP>:5984/_utils/`. Username and password can be found [here](/playbook/variables/couchdb-vars.yaml#L6-L7).
 If you are not on campus, use the AnyConnect VPN.
