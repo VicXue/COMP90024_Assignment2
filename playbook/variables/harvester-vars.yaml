@@ -1,0 +1,3 @@
+harvester_dir: harvester_docker
+harvester_service_name: harvester
+harvester_stack_name: harvester_stack
