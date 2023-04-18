@@ -93,5 +93,14 @@
   gather_facts: false
   roles:
     - role: react-frontend-deploy
+
+- name: Harvester Deploy
+  tags: harvester
+  hosts: master:workers
+  vars_files:
+    - variables/docker-vars.yaml
+    - variables/couchdb-vars.yaml
+    - variables/harvester-vars.yaml
+  gather_facts: false
   roles:
-    - role: react-frontend
+    - role: harvester-deploy
