@@ -7,7 +7,8 @@ from ibmcloudant.cloudant_v1 import CloudantV1, Document
 
 def main():
     # Set logging level to show only critical logs
-    logging.basicConfig(level=logging.CRITICAL)
+    logging.basicConfig(level=logging.DEBUG)
+    logging.debug("Entered Main")
 
     # 1. Create a client with `CLOUDANT` default service name =============
     client = CloudantV1.new_instance()
@@ -62,3 +63,6 @@ def main():
     example_document.rev = create_document_response["rev"]
     print(f'You have created the document:\n{example_document}')
     time.sleep(3600)
+
+if __name__ == "__main__":
+    main()
