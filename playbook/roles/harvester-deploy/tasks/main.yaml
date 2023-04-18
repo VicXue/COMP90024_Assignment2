@@ -1,0 +1,58 @@
+- name: Remove existing stack 
+  become: yes
+  community.docker.docker_stack:
+    state: absent
+    name: "{{harvester_stack_name}}"
+  when: "'master' in group_names"
+
+- name: Create harvester src directory
+  become: yes
+  ansible.builtin.file:
+    path: "{{ harvester_dir }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    recurse: yes
+    state: directory
+
+- name: "copy files"
+  become: yes
+  synchronize:
+    src: ../harvester/
+    dest: ~/{{ harvester_dir }}/
+    # rsync_opts:
+    #     - --exclude=node_modules/*
+
+- name: Copy Docker Compose file to remote hosts
+  become: yes
+  ansible.builtin.template:
+    src: docker-compose.yaml.j2
+    dest: "{{ harvester_dir }}/docker-compose.yaml"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: Copy Dockerfile to remote hosts
+  become: yes
+  ansible.builtin.template:
+    src: Dockerfile.prod.j2
+    dest: "{{ harvester_dir }}/Dockerfile.prod"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: Build image
+  become: yes
+  community.docker.docker_image:
+    name: "{{harvester_service_name}}"
+    build:
+      path: "/home/ubuntu/{{ harvester_dir }}"
+      dockerfile: Dockerfile.prod
+    source: build
+    force_source: true
+    
+- name: Deploy stack from a compose file
+  become: yes
+  community.docker.docker_stack:
+    state: present
+    name: "{{harvester_stack_name}}"
+    compose:
+      - "{{ harvester_dir }}/docker-compose.yaml"
+  when: "'master' in group_names"
