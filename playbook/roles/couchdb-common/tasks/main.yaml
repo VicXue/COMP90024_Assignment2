@@ -1,4 +1,4 @@
-- name: Create CouchDB directory
+- name: Create CouchDB config directory
   become: yes
   ansible.builtin.file:
     path: "{{ couchdb_dir }}/config"
@@ -7,7 +7,7 @@
     recurse: yes
     state: directory
 
-- name: Create CouchDB directory
+- name: Create CouchDB logs directory
   become: yes
   ansible.builtin.file:
     path: "{{ couchdb_dir }}/logs"
