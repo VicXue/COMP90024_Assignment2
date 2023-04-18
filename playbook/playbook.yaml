@@ -84,12 +84,14 @@
   roles:
     - role: couchdb-cluster-join
 
-- name: React Frontend Docker Common Setup
+- name: React Frontend Deploy
   tags: frontend
   hosts: master:workers
   vars_files:
     - variables/frontend-vars.yaml
     - variables/docker-vars.yaml
   gather_facts: false
+  roles:
+    - role: react-frontend-deploy
   roles:
     - role: react-frontend
