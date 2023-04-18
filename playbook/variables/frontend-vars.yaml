@@ -1,0 +1,3 @@
+frontend_service_name: react
+frontend_dir: react_docker
+frontend_stack_name: frontend_stack

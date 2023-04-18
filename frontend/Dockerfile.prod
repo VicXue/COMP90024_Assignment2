@@ -1,0 +1,18 @@
+FROM node:current-alpine3.16
+WORKDIR /app
+ENV PATH /app/node_modules/.bin:$PATH
+COPY package.json ./
+COPY package-lock.json ./
+RUN npm install --silent
+RUN npm install react-scripts -g --silent
+COPY . ./
+# build react project
+RUN npm run build
+
+# nginx multistage
+FROM nginx:stable-alpine
+COPY --from=0 /app/build /usr/share/nginx/html
+COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+# Start the nginx webserver automatically once the container runs.
+CMD ["nginx", "-g", "daemon off;"]
