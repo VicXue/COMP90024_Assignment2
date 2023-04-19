@@ -10,8 +10,6 @@ services:
     networks:
       - react_network
     image: {{harvester_service_name}}:latest
-    environment:
-      - CHOKIDAR_USEPOLLING=true
 
 networks:
   react_network:
