@@ -1,0 +1,3 @@
+backend_dir: backend_docker
+backend_service_name: gin
+backend_stack_name: backend_stack
