@@ -104,3 +104,14 @@
   gather_facts: false
   roles:
     - role: harvester-deploy
+
+- name: Backend Deploy
+  tags: backend
+  hosts: master:workers
+  vars_files:
+    - variables/docker-vars.yaml
+    - variables/couchdb-vars.yaml
+    - variables/backend-vars.yaml
+  gather_facts: false
+  roles:
+    - role: gin-backend-deploy
