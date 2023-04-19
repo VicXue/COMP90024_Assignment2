@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+  {{backend_service_name}}:
+    hostname: {% raw %}"{{.Service.Name}}"{% endraw %} 
+    deploy:
+      mode: replicated
+      replicas: 2
+      endpoint_mode: vip
+    networks:
+      - react_network
+    image: {{backend_service_name}}:latest
+    ports:
+      - '8080:8080'
+
+networks:
+  react_network:
+    name: {{overlay_network_name}}
+    external: true
