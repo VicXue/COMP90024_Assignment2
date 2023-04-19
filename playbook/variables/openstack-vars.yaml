@@ -27,11 +27,17 @@ cidr_security_groups:
     port_range_min: 22
     port_range_max: 22
     remote_ip_prefix: 0.0.0.0/0
-  - name: http
-    description: "For web connection"
+  - name: http_web
+    description: "For web app connection"
     protocol: tcp
     port_range_min: 80
     port_range_max: 80
+    remote_ip_prefix: 0.0.0.0/0
+  - name: http_api
+    description: "For web api connection"
+    protocol: tcp
+    port_range_min: 8080
+    port_range_max: 8080
     remote_ip_prefix: 0.0.0.0/0
   - name: db_ui
     description: "DB UI port"
