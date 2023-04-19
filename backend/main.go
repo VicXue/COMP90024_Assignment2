@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -45,6 +46,8 @@ func FetchDocs(g *gin.Context) {
 
 func main() {
 	r := gin.Default()
+	// Enable CORS middleware
+	r.Use(cors.Default())
 	docs.SwaggerInfo.BasePath = "/api/v1"
 	v1 := r.Group("/api/v1")
 	{
@@ -53,7 +56,7 @@ func main() {
 			eg.GET("/fetchdocs", FetchDocs)
 		}
 	}
+
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	r.Run(":8080")
-
 }
