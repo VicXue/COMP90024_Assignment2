@@ -41,7 +41,7 @@ p.s. Due to the intrinsics of docker swarm, the CouchDB cluster may not finish i
     
 ## Notes
 CouchDB cluster is ready to play with. Go to MRC and find our project. You can use any instance's IP to access it. The url to the GUI is `<IP>:5984/_utils/`. Username and password can be found [here](/playbook/variables/couchdb-vars.yaml#L6-L7).
-React frontend is accessible on port 90 and Gin backend hosts a swagger page, which is accessible on port 8080.
+React frontend is accessible at port 80 and Gin backend hosts a swagger page, which is accessible at port 8080.
 
 Current sevice communication map is shown as below:
 ```mermaid
