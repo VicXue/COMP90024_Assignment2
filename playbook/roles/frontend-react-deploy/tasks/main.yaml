@@ -1,3 +1,10 @@
+- name: Remove existing stack 
+  become: yes
+  community.docker.docker_stack:
+    state: absent
+    name: "{{frontend_stack_name}}"
+  when: "'master' in group_names"
+
 - name: Create frontend src directory
   become: yes
   ansible.builtin.file:
@@ -23,7 +30,15 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
 
-- name: Build image and with build args
+- name: Copy Dockerfile to remote hosts
+  become: yes
+  ansible.builtin.template:
+    src: Dockerfile.prod.j2
+    dest: "{{ frontend_dir }}/Dockerfile.prod"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: Build image
   become: yes
   community.docker.docker_image:
     name: "{{frontend_service_name}}"
@@ -31,7 +46,7 @@
       path: "/home/ubuntu/{{ frontend_dir }}"
       dockerfile: Dockerfile.prod
     source: build
-    
+    force_source: true
 
 - name: Deploy stack from a compose file
   become: yes

@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  {{harvester_service_name}}:
+  {{backend_service_name}}:
     hostname: {% raw %}"{{.Service.Name}}"{% endraw %} 
     deploy:
       mode: replicated
@@ -9,7 +9,9 @@ services:
       endpoint_mode: vip
     networks:
       - react_network
-    image: {{harvester_service_name}}:latest
+    image: {{backend_service_name}}:latest
+    ports:
+      - '8080:8080'
 
 networks:
   react_network:

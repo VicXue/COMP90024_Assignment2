@@ -24,26 +24,39 @@ def main():
         if put_database_result["ok"]:
             print(f'"{example_db_name}" database created.')
     except ApiException as ae:
-        if ae.code == 412:
-            print(f'Cannot create "{example_db_name}" database, ' +
+        if ae.code == 409:
+            logging.warn(f'Cannot create "{example_db_name}" database, ' +
                 'it already exists.')
+    
+    example_doc_id = "example_1"
 
-    # 3. Create a document ================================================
-    # Create a document object with "example" id
-    example_doc_id = "example"
-    # Setting `id` for the document is optional when "post_document"
-    # function is used for CREATE. When `id` is not provided the server
-    # will generate one for your document.
-    example_document: Document = Document(id=example_doc_id)
+    try:
+        document = client.get_document(
+            db=example_db_name,
+            doc_id=example_doc_id
+        ).get_result()
+        logging.debug(f"retrieved document: {document}")
+        document["joined"] = datetime.datetime.utcnow().isoformat()
 
-    # Add "name" and "joined" fields to the document
-    example_document.name = "Bob Smith"
-    example_document.joined = datetime.datetime.utcnow().isoformat()
+    except ApiException as ae:
+        if ae.code == 404:
+            logging.warn(f'Cannot retrieve doc: "{example_doc_id}", ' +
+                'it does not exist.')
+            # 3. Create a document ================================================
+            # Create a document object with "example" id
+            # Setting `id` for the document is optional when "post_document"
+            # function is used for CREATE. When `id` is not provided the server
+            # will generate one for your document.
+            document: Document = Document(id=example_doc_id)
+            # Add "name" and "joined" fields to the document
+            document.name = "Bob Smith"
+            document.joined = datetime.datetime.utcnow().isoformat()
+    
 
     # Save the document in the database with "post_document" function
     create_document_response = client.post_document(
         db=example_db_name,
-        document=example_document
+        document=document
     ).get_result()
 
     # =====================================================================
@@ -60,8 +73,11 @@ def main():
 
     # Keeping track of the revision number of the document object
     # is necessary for further UPDATE/DELETE operations:
-    example_document.rev = create_document_response["rev"]
-    print(f'You have created the document:\n{example_document}')
+    if document is Document:
+        document.rev = create_document_response["rev"]
+    else:
+        document["rev"] = create_document_response["rev"]
+    print(f'You have created the document:\n{document}')
     time.sleep(3600)
 
 if __name__ == "__main__":
