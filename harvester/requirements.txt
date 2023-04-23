@@ -1,3 +1,2 @@
 ibmcloudant
-requests==2.27.1
 Mastodon.py==1.8.0
