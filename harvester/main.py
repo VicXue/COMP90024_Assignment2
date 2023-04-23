@@ -1,84 +1,41 @@
-import logging
-import datetime
-import time
+import json
 
-from ibm_cloud_sdk_core import ApiException
-from ibmcloudant.cloudant_v1 import CloudantV1, Document
+import requests
+from mastodon import Mastodon, StreamListener
+
 
 def main():
-    # Set logging level to show only critical logs
-    logging.basicConfig(level=logging.DEBUG)
-    logging.debug("Entered Main")
+    create_database()
+    m = Mastodon(api_base_url="https://mastodon.au",
+                 access_token="1opBnKVhYAeM8fQNUaVefDZg8qr24nK74T-NtKjg1Nw")  # It is my access token. You may replace it with yours.
+    m.stream_public(Listener())
 
-    # 1. Create a client with `CLOUDANT` default service name =============
-    client = CloudantV1.new_instance()
 
-    # 2. Create a database ================================================
-    example_db_name = "orders"
-
-    # Try to create database if it doesn't exist
-    try:
-        put_database_result = client.put_database(
-            db=example_db_name
-        ).get_result()
-        if put_database_result["ok"]:
-            print(f'"{example_db_name}" database created.')
-    except ApiException as ae:
-        if ae.code == 409:
-            logging.warn(f'Cannot create "{example_db_name}" database, ' +
-                'it already exists.')
-    
-    example_doc_id = "example_1"
-
-    try:
-        document = client.get_document(
-            db=example_db_name,
-            doc_id=example_doc_id
-        ).get_result()
-        logging.debug(f"retrieved document: {document}")
-        document["joined"] = datetime.datetime.utcnow().isoformat()
-
-    except ApiException as ae:
-        if ae.code == 404:
-            logging.warn(f'Cannot retrieve doc: "{example_doc_id}", ' +
-                'it does not exist.')
-            # 3. Create a document ================================================
-            # Create a document object with "example" id
-            # Setting `id` for the document is optional when "post_document"
-            # function is used for CREATE. When `id` is not provided the server
-            # will generate one for your document.
-            document: Document = Document(id=example_doc_id)
-            # Add "name" and "joined" fields to the document
-            document.name = "Bob Smith"
-            document.joined = datetime.datetime.utcnow().isoformat()
-    
-
-    # Save the document in the database with "post_document" function
-    create_document_response = client.post_document(
-        db=example_db_name,
-        document=document
-    ).get_result()
-
-    # =====================================================================
-    # Note: saving the document can also be done with the "put_document"
-    # function. In this case `doc_id` is required for a CREATE operation:
+def create_database():
     """
-    create_document_response = client.put_document(
-        db=example_db_name,
-        doc_id=example_doc_id,
-        document=example_document
-    ).get_result()
+    Create a database named toots in the CouchDB Cluster.
     """
-    # =====================================================================
+    url = "http://admin:DbPassword.1@172.26.134.0:5984/toots"
+    requests.put(url)
 
-    # Keeping track of the revision number of the document object
-    # is necessary for further UPDATE/DELETE operations:
-    if document is Document:
-        document.rev = create_document_response["rev"]
-    else:
-        document["rev"] = create_document_response["rev"]
-    print(f'You have created the document:\n{document}')
-    time.sleep(3600)
+
+class Listener(StreamListener):
+    def on_update(self, status):
+        """
+        Assume that the database named toots exists in CouchDB.
+        Store a toot in CouchDB by sending a POST request to CouchDB.
+        Each toot is a document in that database.
+        """
+        url = "http://admin:DbPassword.1@172.26.134.0:5984/toots"
+        headers = {"Content-Type": "application/json"}
+        raw_data = json.dumps(status, sort_keys=True, default=str)
+
+        # You may process the raw toots here.
+
+        # Then you may replace raw_data with processed_data in the following statement.
+        response = requests.post(url, data=raw_data, headers=headers)
+        print(response.json())
+
 
 if __name__ == "__main__":
     main()
