@@ -15,6 +15,7 @@ bind_address = 0.0.0.0
 [chttpd_auth]
 proxy_use_secret = true
 secret = 5ffa3ff6471d4cbda5e444e5e34b1c51
+same_site = lax
 
 [couchdb]
 uuid = 93d47660d8db4ad4963df070bb53b3dd
@@ -22,3 +23,6 @@ uuid = 93d47660d8db4ad4963df070bb53b3dd
 [log]
 writer = file
 file = /opt/couchdb/log/couch.log
+
+[csp]
+attachments_enable = false
