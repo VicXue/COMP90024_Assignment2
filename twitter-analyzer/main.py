@@ -7,10 +7,11 @@ import util
 # specify this index as the last(the biggest) index in the db to avoid rework (if somehow the program failed)
 LAST_INDEX = -1
 
-def process_data(index, tweet, gcc_code, emo_score):
+def process_data(index, tweet, gcc_code, senti_score, emo_score):
     doc = {}
     doc["index"] = index
     doc["gcc"] = gcc_code
+    doc["sentiment_score"] = senti_score
     doc["emotion_score"] = emo_score
     doc["text"] = tweet.get("data", {}).get("text")
     doc["includes"] = tweet.get("includes")
@@ -42,11 +43,13 @@ def main(data_path, location_path):
             if not util.does_include_keywords(tweet.get("data", {}).get("text")):
                 continue
             
-            # Check Emotion Score
-            # score = GET_EMOTION_SCORE()
-            score = None
+            # Check Sentiment Score
+            senti_score = util.get_sentiment_score(tweet.get("data", {}).get("text"))
 
-            processed_data = process_data(index, tweet, code, score)
+            # Check Emotion Score
+            emo_score = util.get_emotion_score(tweet.get("data", {}).get("text"))
+
+            processed_data = process_data(index, tweet, code, senti_score, emo_score)
 
             bulk_docs.append(processed_data)
             if len(bulk_docs) % 1000 == 0:
@@ -72,5 +75,3 @@ if __name__ == "__main__":
     data_path = args.data
 
     main(data_path, location_path)
-
-    

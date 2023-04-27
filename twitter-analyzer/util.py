@@ -3,6 +3,8 @@ import os
 import re
 import pandas as pd
 import requests
+from nrclex import NRCLex
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 USER = "admin"
 PASSWORD = "DbPassword.1"
@@ -26,7 +28,8 @@ STATE_ABB_DICT = {
 
 GCC_DICT = {"sydney": "1gsyd", "melbourne": "2gmel", "brisbane": "3gbri", "adelaide": "4gade", "perth": "5gper",
             "hobart": "6ghob", "darwin": "7gdar", "canberra": "8acte", "RURAL": "RURAL"}
-# Choose key words for analysis
+
+# Choose key words and related hashtags for analysis
 KEY_WORDS_SET = {"mental", "mental health", "emotional health", "psychological health", 
                "mental soundness","emotional soundness", "psychological soundness",
                "mental balance", "emotional balance", "psychological balance"
@@ -46,9 +49,6 @@ KEY_WORDS_SET = {"mental", "mental health", "emotional health", "psychological h
                 "WomensMentalHealth", "KidsMentalHealth", "YouthMentalHealth", "IndigenousMentalHealth", 
                 "MentalHealthSupportServices", "MentalHealthPolicy", "MentalHealthReform", "MentalHealthAdvocacy", 
                 "MentalHealthAwarenessMonthAU", "MentalHealthResearchAU", "MentalHealthNurseAU", "MentalHealthCounsellorAU"}
-
-# Choose related hashtags for analysis
-key_hashtag_lst = []
 
 def process_location_file(location_path):
     """
@@ -223,6 +223,31 @@ def does_include_keywords(text):
     if any(word in text for word in KEY_WORDS_SET):
         return True
     return False
+
+def get_emotion_score(text):
+    '''
+    Returns: dictionary of emotional affect indicators 
+    {'fear': 0.0, 'anger': 0.0, 'anticip': 0.0, 
+    'trust': 0.0, 'surprise': 0.0, 'positive': 0.0, 
+    'negative': 0.0, 'sadness': 0.0, 'disgust': 0.0, 'joy': 0.0, 
+    'anticipation': 0.0}
+
+    The bigger indicator, the more affect from this emotion is detected from the text
+    '''
+    emotion = NRCLex(text)
+    emo_dict = emotion.affect_frequencies
+    return emo_dict
+
+def get_sentiment_score(text):
+    '''
+    Returns: dictionary of sentiment affect indicators 
+    {'neg': 0.0, 'neu': 0.0, 'pos': 0.0, 'compound': 0.0}
+
+    The bigger indicator, the more affect from this sentiment is detected from the text
+    '''
+    senti_analyser = SentimentIntensityAnalyzer()
+    sentiment_dict = senti_analyser.polarity_scores(text)
+    return sentiment_dict
 
 def gen_dict_extract(key, var):
     if hasattr(var,"items"): # hasattr(var,"items") for python 3
