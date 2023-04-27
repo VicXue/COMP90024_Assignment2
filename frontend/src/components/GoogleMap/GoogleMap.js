@@ -5,8 +5,7 @@ import "./GoogleMap.css";
 
 function Home() {
   const { isLoaded } = useLoadScript({
-    // googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-    googleMapsApiKey: "AIzaSyCtyCZYcCJIVmKi5QxPMFYQGYgOS_RNPrw",
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY
   });
 
   if (!isLoaded) {
