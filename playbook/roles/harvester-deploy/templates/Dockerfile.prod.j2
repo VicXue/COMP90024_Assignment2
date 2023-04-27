@@ -1,0 +1,10 @@
+FROM python:3.9 
+COPY . ./
+
+ENV CLOUDANT_AUTH_TYPE=COUCHDB_SESSION
+ENV CLOUDANT_URL=http://{{couchdb_service_name}}:5984
+ENV CLOUDANT_USERNAME={{couchdb_user}}
+ENV CLOUDANT_PASSWORD={{couchdb_pass}}
+
+RUN pip install -r "requirement.txt"
+CMD ["python", "./main.py"] 

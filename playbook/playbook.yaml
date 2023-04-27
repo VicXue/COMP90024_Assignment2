@@ -84,12 +84,35 @@
   roles:
     - role: couchdb-cluster-join
 
-- name: React Frontend Docker Common Setup
+- name: Harvester Deploy
+  tags: harvester
+  hosts: master:workers
+  vars_files:
+    - variables/docker-vars.yaml
+    - variables/couchdb-vars.yaml
+    - variables/harvester-vars.yaml
+  gather_facts: false
+  roles:
+    - role: harvester-deploy
+
+- name: Backend Deploy
+  tags: backend
+  hosts: master:workers
+  vars_files:
+    - variables/docker-vars.yaml
+    - variables/couchdb-vars.yaml
+    - variables/backend-vars.yaml
+  gather_facts: false
+  roles:
+    - role: backend-gin-deploy
+
+- name: React Frontend Deploy
   tags: frontend
   hosts: master:workers
   vars_files:
     - variables/frontend-vars.yaml
+    - variables/backend-vars.yaml
     - variables/docker-vars.yaml
   gather_facts: false
   roles:
-    - role: react-frontend
+    - role: frontend-react-deploy

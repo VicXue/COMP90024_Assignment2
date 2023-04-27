@@ -13,7 +13,8 @@
   become: yes
   register: command_output
   shell: |
-    docker ps --format {% raw %}"{{.Names}}"{% endraw %} 
+    docker ps | grep "couchdb:latest" | awk '{ print $15 }'
+  # docker ps --format {% raw %}"{{.Names}}"{% endraw %} 
   when: "'workers' in group_names"
 
 - name: Store Container Names
