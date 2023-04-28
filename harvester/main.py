@@ -4,12 +4,17 @@ import couchdb
 from mastodon import Mastodon, StreamListener
 import pandas as pd
 import harvester_util
+import os 
 
 
 
 #setup basic informatio for couchdb
-couchdb_admin = ''
-couchdb_password = ''
+couchdb_admin = os.environ.get("DB_USER")
+couchdb_password = os.environ.get("DB_PASSWORD")
+
+#setup basic informatio for mastodon
+mastodon_server = os.environ.get("MASTODON_SERVER")
+mastodon_token = os.environ.get("MASTODON_TOKEN")
 
 couchdb_url = f'http://{couchdb_admin}:{couchdb_password}@172.26.134.0:5984/'
 couch = couchdb.Server(couchdb_url)
@@ -17,12 +22,12 @@ couch = couchdb.Server(couchdb_url)
 #two db for two different contents
 db_name_ls = ['mental_disabled_db', 'non_mental_disabled_db']
 
-
+print(f"Scraping Mastodon Server: {mastodon_server}")
 
 def main():
     create_database()
-    m = Mastodon(api_base_url="https://disabled.social",
-                 access_token="_-lazD_H4jFJcLMlaD8K1_PiraPpPD8_LbDFprEqifo")  # Johnny's tocken.
+    m = Mastodon(api_base_url=mastodon_server,
+                 access_token=mastodon_token)  # Johnny's tocken.
     m.stream_public(Listener())
 
 
