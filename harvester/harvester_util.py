@@ -1,4 +1,6 @@
 import json
+import nltk 
+nltk.download('punkt')
 from nrclex import NRCLex
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from nltk.stem import PorterStemmer
