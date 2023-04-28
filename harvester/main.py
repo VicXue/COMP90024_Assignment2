@@ -1,22 +1,40 @@
 import json
-
-import requests
+import couchdb
+#import requests
 from mastodon import Mastodon, StreamListener
+import pandas as pd
+import harvester_util
+
+
+
+#setup basic informatio for couchdb
+couchdb_admin = ''
+couchdb_password = ''
+
+couchdb_url = f'http://{couchdb_admin}:{couchdb_password}@172.26.134.0:5984/'
+couch = couchdb.Server(couchdb_url)
+
+#two db for two different contents
+db_name_ls = ['mental_disabled_db', 'non_mental_disabled_db']
+
 
 
 def main():
     create_database()
-    m = Mastodon(api_base_url="https://mastodon.au",
-                 access_token="1opBnKVhYAeM8fQNUaVefDZg8qr24nK74T-NtKjg1Nw")  # It is my access token. You may replace it with yours.
+    m = Mastodon(api_base_url="https://disabled.social",
+                 access_token="_-lazD_H4jFJcLMlaD8K1_PiraPpPD8_LbDFprEqifo")  # Johnny's tocken.
     m.stream_public(Listener())
 
 
 def create_database():
     """
-    Create a database named toots in the CouchDB Cluster.
+    Create a database in the CouchDB Cluster if it is not exits
     """
-    url = "http://admin:DbPassword.1@172.26.134.0:5984/toots"
-    requests.put(url)
+    for db in db_name_ls:
+        if db not in couch:
+            db = couch.create(db)
+        else:
+            db = couch[db]
 
 
 class Listener(StreamListener):
@@ -26,15 +44,20 @@ class Listener(StreamListener):
         Store a toot in CouchDB by sending a POST request to CouchDB.
         Each toot is a document in that database.
         """
-        url = "http://admin:DbPassword.1@172.26.134.0:5984/toots"
-        headers = {"Content-Type": "application/json"}
+
+        mental_db = couch[db_name_ls[0]]
+        non_mental_db = couch[db_name_ls[1]]
+
         raw_data = json.dumps(status, sort_keys=True, default=str)
 
-        # You may process the raw toots here.
-
-        # Then you may replace raw_data with processed_data in the following statement.
-        response = requests.post(url, data=raw_data, headers=headers)
-        print(response.json())
+        #process the raw toots here.
+        processed_data = harvester_util.processed_fuction(json.loads(raw_data))
+        if processed_data[0] == 0:
+            doc_id, doc_rev = non_mental_db.save(json.loads(processed_data[1]))
+            print(f'Document saved with ID: {doc_id} and revision: {doc_rev}', 'in non_mental_db')
+        else:
+            doc_id, doc_rev = mental_db.save(json.loads(processed_data[1]))
+            print(f'Document saved with ID: {doc_id} and revision: {doc_rev}', 'in mental_db')
 
 
 if __name__ == "__main__":
