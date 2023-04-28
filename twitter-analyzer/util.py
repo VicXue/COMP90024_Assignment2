@@ -5,11 +5,14 @@ import pandas as pd
 import requests
 from nrclex import NRCLex
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+import nltk
+from nltk.stem import PorterStemmer
+from nltk import word_tokenize
 
 USER = "admin"
 PASSWORD = "DbPassword.1"
 BASE_URL = "http://172.26.134.0:5984/"
-DB_NAME = "tweets"
+DB_NAME = "sample_tweets"
 DB_SESSION = requests.Session()
 DB_SESSION.auth = (USER, PASSWORD)
 
@@ -30,73 +33,43 @@ GCC_DICT = {"sydney": "1gsyd", "melbourne": "2gmel", "brisbane": "3gbri", "adela
             "hobart": "6ghob", "darwin": "7gdar", "canberra": "8acte", "RURAL": "RURAL"}
 
 # Choose key words and related hashtags for analysis
-KEY_WORDS_SET = {"mental", "mental health", "emotional health", "psychological health", 
-               "mental soundness","emotional soundness", "psychological soundness",
-               "mental balance", "emotional balance", "psychological balance"
-               "mental wellbeing","emotional wellbeing","psychological wellbeing",
-               "mental wellness", "emotional wellness", "psychological wellness",
-               "mental stability", "emotional stability","psychological stability",
-               "mental fitness", "emotional fitness","psychological fitness",
-               "mental resilience", "emotional resilience","psychological resilience",
-                "mental strength", "emotional strength","psychological strength",
-               "mental issue", "depression", "mental illness", "anxiety disorder", 
-               "mental care", "wellbeing", "MentalHealthAwareness", "EndTheStigma", "SelfCare", "Wellness", 
-                "Mindfulness", "MentalHealthMatters", "MentalIllness", "MentalHealthRecovery", 
-                "MentalHealthSupport", "MentalHealthAdvocate", "YouAreNotAlone", "BreakTheStigma", 
-                "MentalHealthWarrior", "Anxiety", "Depression", "PTSD", "BipolarDisorder", "EatingDisorders", 
-                "Schizophrenia", "SuicidePrevention", "TraumaHealing", "MentalHealthAustralia", "RUOK", 
-                "Lifeline", "BeyondBlue", "Headspace", "BlackDogInstitute", "MentalHealthWeek", "MensMentalHealth", 
-                "WomensMentalHealth", "KidsMentalHealth", "YouthMentalHealth", "IndigenousMentalHealth", 
-                "MentalHealthSupportServices", "MentalHealthPolicy", "MentalHealthReform", "MentalHealthAdvocacy", 
-                "MentalHealthAwarenessMonthAU", "MentalHealthResearchAU", "MentalHealthNurseAU", "MentalHealthCounsellorAU",
-                'coping', 'do not deserve to', 'social anxie', 'mental disease', 'kill themselves', 'mentally ill', 
-                'mental health', 'adhd', 'dysthymia', 'ocd', 'ptsd', 'ptsr', 'ptss', 'schizo', 'depres', 'mdd', 'anxiety', 
-                'trauma', 'cishet', 'dehumanizing', 'so angry', 'i dont want to', 'controlled', 'suicidal', 'ableist', 
-                'counselling', 'blade', 'want to kill', 'wrists', 'harm', 'disorder', 'i will never be', 'voices in my', 
-                'want to hug', 'want to die', 'dysphoria', 'hear voices', 'days clean', 'celexa', 'illness', 'getting worse', 
-                'they do not care', 'im screaming', 'ranting', 'run away', 'nausea', 'borderline', 'suicide', 'citalopram', 
-                'insecure', 'unbearable', 'diseases', 'kill myself', 'sorry for being', 'i am sorry that', 'to die in', 
-                'sexually', 'horrid', 'i give up', 'relapsing', 'need to talk', 'emo', 'thinspo', 'grieving', 'feel sick', 
-                'getting bad again', 'deal with it', 'wish i was dead', 'i am so sick', 'bothered', 'scars', 'prescribed', 
-                'admitted', 'abusive', 'dizzy', 'puking', 'a victim', 'really sad', 'weeks clean', 'my existence', 'trigger', 
-                'manic', 'mental hospital', 'irl friends', 'survivor', 'hearing voices', 'stains', 'wanting to die', 
-                'i am scared', 'want to help', 'afraid that', 'worthless', 'tense', 'masturbating', 'not alone', 'the voices in', 
-                'have to deal with', 'and never wake up', 'effexor', 'gives a shit', 'do not want to eat', 'offend', 'was forced', 
-                'alcoholism', 'feel like shit', 'actually crying', 'months clean', 'shit like this', 'tendencies', 'horrifying', 
-                'useless', 'to hurt myself', 'vile', 'recover', 'wellbutrin', 'guilt', 'razor', 'hate everything', 'horny', 
-                'duloxetine', 'counsellor', 'feel the same way', 'paranoid', 'hallucinating', 'free will', 'weight loss', 
-                'end my life', 'me to kill', 'sexuality', 'syndrome', 'destructive', 'cannibal', 'damage', 'sorry to hear that', 
-                'it hurts so much', 'problematic', 'hope you are ok', 'hope you are well', 'disappear', 'unstable', 'manipulating', 
-                'underweight', 'insulted', 'treatment', 'vaginas', 'i would feel', 'helped me a lot', 'no one likes me', 'injection', 
-                'my mental', 'sorrow', 'isolated', 'drained', 'cuts', 'what i am going', 'purged', 'esteem', 'rough day', 'misogynist', 
-                'threatening', 'not available', 'kill him', 'shrink', 'voices are', 'i have not spoken to', 'vulnerable', 'collarbones', 
-                'hallucinations', 'i have lost', 'i can not bring myself', 'cals', 'healing', 'psych', 'nostalgic', 'i need to lose', 
-                'rapist', 'cries', 'purging', 'that feel when', 'toxic', 'overwhelming', 'hurtful', 'doxycycline', 'i cut', 
-                'sad all the time', 'empathy', 'insomnia', 'vent', 'grave', 'seroquel', 'to live anymore', 'endure', 'i have been feeling', 
-                'distress', 'restless', 'hope i die', 'the bottom of the', 'consent', 'overdose', 'lethal', 'stabbed', 'talentless', 'punish', 
-                'relapse', 'save me from myself', 'rest of my life', 'near the end of', 'a burden', 'for mental', 'failings', 'stigma', 
-                'obsessive', 'narcissistic', 'health it', 'am not worth', 'i am sorry you', 'am so stressed', 'a deep breath', 'harsh', 
-                'doctors', 'to love myself', 'controlling', 'panic', 'disturbed', 'lose weight', 'would kill', 'shaming', 'it is my fault', 
-                'angry i', 'whiny', 'refused', 'agony', 'not eaten', 'does get better', 'i will be dead', 'will never get over', 
-                'commit', 'bugging', 'prescription', 'intention', 'disgrace', 'pedophiles', 'sadness', 'not defending', 'urges', 'xanax', 
-                'condition', 'i am crying so', 'appropriation is', 'needle', 'cutting', 'a bad person', 'swear to god i', 'my weight', 
-                'i need to cut', 'hatred', 'i am so worried', 'attacking', 'am still alive', 'erasure', 'drowning', 'loneliness', 
-                'to swallow', 'marks', 'moan', 'vomiting', 'can not do this anymore', 'abuse', 'want to be skinny', 'intolerant', 
-                'been clean', 'hate life', 'bawling', 'so alone', 'so scared', 'horrendous', 'bullies', 'ableism', 
-                'victim of', 'lexapro', 'androgynous', 'anxious', 'alone and', 'not stop crying', 'crying so much', 'heroin', 'failure', 
-                'my own fault', 'attacks', 'tired omg', 'killing people', 'be alone', 'feel sad', 'not sleeping', 'im crying so', 
-                'hate people', 'drowned', 'manipulate', 'i want to cut', 'masturbation', 'am struggling', 'how hard it is', 'threatened', 
-                'bleed', 'wreck', 'med', 'to therapy', 'in pain', 'weight again', 'feel so much better', 'broke down', 'worrying', 
-                'still struggle', 'am losing', 'am going through', 'exploited', 'escape', 'my wrist', 'to hate me', 'give a shit', 
-                'this is too much', 'reason to live', 'do not cut', 'deserve to die', 'am disgusting', 'my own skin', 'hate myself', 
-                'not :)', 'let me die', 'bullied', 'strain', 'flesh', 'feel so fat', 'look in the mirror', 'died in', 'self-care', 'raping', 
-                'gutted', 'devastated', 'innocence', 'clean from', 'a waste of space', 'i hate my life', 'to try and sleep', 'dizziness', 
-                'am not the only one', 'abortion', 'sob', 'need someone to talk', 'betrayed', 'fraud', 'kill herself', 'personalities', 
-                'paranoia', 'i cant do this', 'abusing', 'so sorry to', 'commenting', 'you realise', 'want to live', 'deserve to be happy', 
-                'be thin', 'edgy', 'drop dead', 'flashbacks', 'being fat', 'sorry for your', 'someone to talk to', 'delusion', 'haunt', 'hate my body', 
-                'imaginary', 'bothering', 'die right now', 'bully', 'am just sick of', 'mentalhealth', 'i am already dead', 'void', 'i am trash', 
-                'i have been up', 'safe space', 'a piece of shit', 'are feeling better', 'i can not deal with', 'lucid', 'overweight', 'whining', 
-                'desperation', 'consciousness', 'have lost weight', 'i should probably sleep'}
+KEY_WORDS_SET = {'cope', 'social', 'anxieti', 'mental', 'kill', 'mental', 'mentalhealth', 'adhd', 'dysthymia', 'ocd', 'ptsd', 
+                'ptsr', 'ptss', 'schizo', 'depr', 'mdd', 'trauma', 'cishet', 'dehuman', 'angri', 'control', 'suicid', 
+                'ableist', 'counsel', 'blade', 'wrist', 'harm', 'disord', 'dysphoria', 'celexa', 'ill', 'rant', 'nausea', 
+                'borderlin', 'suicid', 'citalopram', 'insecur', 'unbear', 'diseas', 'sexual', 'horrid', 'relaps', 'emo', 
+                'thinspo', 'griev', 'bother', 'scar', 'prescrib', 'admit', 'abus', 'dizzi', 'puke', 'victim', 'manic', 
+                'mentalhospit', 'survivor', 'stain', 'worthless', 'tens', 'effexor', 'offend', 'alcohol', 'horrifi', 
+                'useless', 'vile', 'recov', 'wellbutrin', 'guilt', 'razor', 'horni', 'duloxetin', 'counsellor', 'paranoid', 
+                'hallucin', 'sexual', 'syndrom', 'destruct', 'cannib', 'damag', 'problemat', 'disappear', 'unstabl', 
+                'manipul', 'underweight', 'insult', 'treatment', 'vagina', 'inject', 'sorrow', 'isol', 'misogynist', 
+                'threaten', 'hallucin', 'heal', 'psych', 'purg', 'overwhelm', 'hurt', 'doxycyclin', 'empathi', 'insomnia', 
+                'vent', 'endur', 'distress', 'restless', 'consent', 'overdos', 'lethal', 'stab', 'talentless', 'punish', 
+                'relaps', 'fail', 'stigma', 'obsess', 'narcissist', 'harsh', 'control', 'panic', 'disturb', 'shame', 'whini', 
+                'refus', 'agoni', 'suffer', 'terror', 'bug', 'prescript', 'intent', 'disgrac', 'pedophil', 'sad', 'xanax', 
+                'hatr', 'drown', 'loneli', 'mark', 'moan', 'vomit', 'abus', 'intoler', 'horrend', 'bulli', 'ableism', 
+                'lexapro', 'androgyn', 'anxiou', 'heroin', 'failur', 'attack', 'drown', 'masturb', 'threaten', 'bleed', 
+                'wreck', 'escap', 'bulli', 'strain', 'flesh', 'selfcar', 'rape', 'gut', 'devast', 'dizzi', 'abort', 'sob', 
+                'betray', 'fraud', 'paranoia', 'abus', 'delus', 'haunt', 'bother', 'die right now', 'bulli', 'mentalhealth', 
+                'void', 'overweight', 'whine', 'desper', 'conscious', 'repli', 'depress', 'mentalhealthawar', 'bipolardisord', 
+                'eatingdisord', 'schizophrenia', 'headspac', 'lifelin' , 
+                "mindfulness", "mentalhealthmatters", "mentalillness", "mentalhealthrecovery", 
+                "mentalhealthsupport", "mentalhealthadvocate", "youarenotalone", "breakthestigma",
+                "mentalhealthwarrior", "anxiety", "depression", "ptsd", "bipolardisorder", "eatingdisorders",
+                "schizophrenia", "suicideprevention", "traumahealing", "mentalhealthaustralia", "ruok",
+                "lifeline", "beyondblue", "headspace", "blackdoginstitute", "mentalhealthweek", "mensmentalhealth",
+                "womensmentalhealth", "kidsmentalhealth", "youthmentalhealth", "indigenousmentalhealth",
+                "mentalhealthsupportservices", "mentalhealthpolicy", "mentalhealthreform", "mentalhealthadvocacy",
+                "mentalhealthawarenessmonthau", "mentalhealthresearchau", "mentalhealthnurseau", "mentalhealthcounsellorau",
+                'anxietydisorder', 'anxietyrecovery', 'anxietyhealing', 'anxietytips', 'emotionalhealth', 'anxiety', 
+                'depression', 'ocd', 'disability', 'chronicillness', 'pressure', 'stress', 'divergentmind', 'hsp', 
+                'trauma', 'psychiatry', 'healthcare', 'patientportal', 'psychology', 'socialwork', 'psychotherapy', 
+                'peacefulmind', 'peacefullife', 'motivation', 'innerwork', 'mentalhealthmatters', 'struggles', 'substanceabuse', 
+                'selfharm', 'eatingdisorder', 'mentalhealthtreatment', 'mentalillness', 'surviving', 'ptsd', 'mentalhealthfirstaid', 
+                'psychischekrisen', 'notjustsad', 'psyche', 'mentalhealthcare', 'mindfulness', 'mentalhealth', 
+                'mindfulnessselfawareness', 'personalgrowth', 'selfinjury', 'deathsofdespair', 'suicide', 
+                'autism', 'neurokin', 'neuropride', 'autismawareness', 'autismacceptance', 'adhders', 'sensitive', 
+                'autism', 'adhd', 'adhdbrain', 'latediagnosis', 'autistic', 'autismawarenessmonth', 'neurodivergent', 
+                'neurodiversity', 'asd', 'actuallyautistic', 'autistictwitter', 'audhd', 'neurospicy', 'neurodiverse'}
 
 def process_location_file(location_path):
     """
@@ -267,6 +240,18 @@ def bulk_send(doc_bulk):
     doc_bulk = list()
     print(res.text)
 
+def preprocess_content(text):
+    text = text.lower()
+    words = word_tokenize(text)
+    ps = PorterStemmer()
+    new_content = []
+    for w in words:
+        rootword=ps.stem (w)
+        if rootword not in """,./;'[]\-=<>?:"{}|!@#$%^&*()""" and len(rootword) != 1:
+            new_content.append(rootword)
+    return new_content
+
+
 def does_include_keywords(text):
     if any(word in text for word in KEY_WORDS_SET):
         return True
@@ -284,7 +269,9 @@ def get_emotion_score(text):
     '''
     emotion = NRCLex(text)
     emo_dict = emotion.affect_frequencies
-    return emo_dict
+    emo_score = emo_dict
+
+    return emo_score
 
 def get_sentiment_score(text):
     '''
@@ -295,7 +282,9 @@ def get_sentiment_score(text):
     '''
     senti_analyser = SentimentIntensityAnalyzer()
     sentiment_dict = senti_analyser.polarity_scores(text)
-    return sentiment_dict
+    senti_score = sentiment_dict
+
+    return senti_score
 
 def gen_dict_extract(key, var):
     if hasattr(var,"items"): # hasattr(var,"items") for python 3
