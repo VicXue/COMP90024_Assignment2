@@ -37,6 +37,7 @@ go.work
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+harvester/.idea
 
 # AWS User-specific
 .idea/**/aws.xml
