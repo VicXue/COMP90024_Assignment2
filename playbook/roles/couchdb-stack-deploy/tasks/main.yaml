@@ -1,3 +1,10 @@
+- name: Remove existing stack 
+  become: yes
+  community.docker.docker_stack:
+    state: absent
+    name: "{{couchdb_stack_name}}"
+  when: "'master' in group_names"
+
 - name: Deploy stack from a compose file
   become: yes
   community.docker.docker_stack:
