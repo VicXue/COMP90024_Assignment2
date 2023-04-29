@@ -63,7 +63,7 @@ def main(data_path, location_path):
 
 
 if __name__ == "__main__":
-    # USAGE: python main.py --location /../sal.json --data /../twitter-data-small.json
+    # USAGE: python main.py --location /../sal.json --data /../twitter-huge.json
 
     parser = argparse.ArgumentParser(description="Processing Twitter data focusing on the geolocation attribute")
     # Pass in the location file path

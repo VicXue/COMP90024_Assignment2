@@ -12,7 +12,7 @@ from nltk import word_tokenize
 USER = "admin"
 PASSWORD = "DbPassword.1"
 BASE_URL = "http://172.26.134.0:5984/"
-DB_NAME = "sample_tweets"
+DB_NAME = "tweets"
 DB_SESSION = requests.Session()
 DB_SESSION.auth = (USER, PASSWORD)
 
@@ -94,8 +94,8 @@ def get_code_by_places(sal):
 
     for (place, value) in sal.items():
         code = value.get("gcc")
-
-        code_by_place_dict[place] = code
+        if is_gcc(code):
+            code_by_place_dict[place] = code
 
     return code_by_place_dict
 
