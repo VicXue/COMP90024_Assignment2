@@ -279,6 +279,11 @@ def get_sentiment_score(text):
     {'neg': 0.0, 'neu': 0.0, 'pos': 0.0, 'compound': 0.0}
 
     The bigger indicator, the more affect from this sentiment is detected from the text
+    
+    'compound' refers as 'normalized, weighted composite score'
+    positive sentiment: compound score >= 0.05
+    neutral sentiment: (compound score > -0.05) and (compound score < 0.05)
+    negative sentiment: compound score <= -0.05
     '''
     senti_analyser = SentimentIntensityAnalyzer()
     sentiment_dict = senti_analyser.polarity_scores(text)
