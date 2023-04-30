@@ -1,3 +1,9 @@
 harvester_dir: harvester_docker
 harvester_service_name: harvester
 harvester_stack_name: harvester_stack
+mastodon_server_0: https://disabled.social
+mastodon_token_0: _-lazD_H4jFJcLMlaD8K1_PiraPpPD8_LbDFprEqifo
+mastodon_server_1: https://mastodon.au
+mastodon_token_1: F-nImthoRNOTGTzb9OPFYrX-Ydr87D7AsTIjyXktRcE
+mastodon_server_2: https://aus.social
+mastodon_token_2: 6wRKpRnfLOzNKDQ3EVtE8W8dxqLpjt9NvW_SV4UY_34

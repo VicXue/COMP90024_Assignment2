@@ -4,9 +4,10 @@ services:
   {{harvester_service_name}}:
     hostname: {% raw %}"{{.Service.Name}}"{% endraw %} 
     deploy:
-      mode: replicated
-      replicas: 2
-      endpoint_mode: vip
+      mode: global
+      #mode: replicated
+      #replicas: 3
+      #endpoint_mode: vip
     networks:
       - react_network
     image: {{harvester_service_name}}:latest
