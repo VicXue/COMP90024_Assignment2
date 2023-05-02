@@ -1,5 +1,6 @@
 // import logo from './logo.svg';
-import Home from "./components/GoogleMap/GoogleMap";
+// import Home from "./components/GoogleMap/GoogleMap";
+import Map from "./components/Map/Map";
 import React, { useEffect, useState } from "react";
 
 import "./App.css";
@@ -56,8 +57,8 @@ function App() {
     //   </header>
     // </div>
     <div>
-      <Home orders={orders} />
-      {/* <Home /> */}
+      {/* <Home orders={orders} /> */}
+      <Map />
     </div>
   );
 }
