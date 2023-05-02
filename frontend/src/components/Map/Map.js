@@ -65,7 +65,7 @@ function Map() {
         }
 
         // Add a new layer to visualize the polygon.
-        if (map.current.getSource("maine-fill") == null) {
+        if (map.current.getLayer("maine-fill") == null) {
           map.current.addLayer({
             id: "maine-fill",
             type: "fill",
@@ -79,9 +79,7 @@ function Map() {
         }
 
         // Add a black outline around the polygon.
-        if (map.current.getSource("maine-outline") != null) {
-          map.current.removeSource("maine-outline");
-        } else {
+        if (map.current.getLayer("maine-outline") == null) {
           map.current.addLayer({
             id: "maine-outline",
             type: "line",
