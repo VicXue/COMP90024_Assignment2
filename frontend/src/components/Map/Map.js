@@ -1,23 +1,27 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
 
+// import geoJSON from "../../data/new_lga_vic.geojson";
+import geoJSON from "../../data/lga_copy.geojson";
+
 mapboxgl.accessToken =
   "pk.eyJ1Ijoiam9obm55bXUiLCJhIjoiY2xoMGtuNjZhMDdwNjNybndqcmRmc3Y4NCJ9.G5G_PRIPl1394Dg1QBjhpA";
 
 function Map() {
   const mapContainer = useRef(null);
   const map = useRef(null);
-  const [lng, setLng] = useState(144.946457);
-  const [lat, setLat] = useState(-37.840935);
-  const [zoom, setZoom] = useState(9);
+  const hoveredStateId = useRef(null);
+
+  const [lng, setLng] = useState(144.9631);
+  const [lat, setLat] = useState(-36.8136);
+  const [zoom, setZoom] = useState(6);
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: "mapbox://styles/mapbox/streets-v12",
-      //   center: [lng, lat],
-      center: [-68.137343, 45.137451],
+      center: [lng, lat],
       zoom: zoom,
     });
   });
@@ -25,74 +29,67 @@ function Map() {
   useEffect(() => {
     if (!map.current) return;
     else {
+      if (!geoJSON) return;
+
       map.current.on("load", () => {
-        // Add a data source containing GeoJSON data.
-        if (map.current.getSource("maine") == null) {
-          map.current.addSource("maine", {
+        //Source
+        if (map.current.getSource(`pol`) == null) {
+          map.current.addSource(`pol`, {
             type: "geojson",
-            data: {
-              type: "Feature",
-              geometry: {
-                type: "Polygon",
-                // These coordinates outline Maine.
-                coordinates: [
-                  [
-                    [-67.13734, 45.13745],
-                    [-66.96466, 44.8097],
-                    [-68.03252, 44.3252],
-                    [-69.06, 43.98],
-                    [-70.11617, 43.68405],
-                    [-70.64573, 43.09008],
-                    [-70.75102, 43.08003],
-                    [-70.79761, 43.21973],
-                    [-70.98176, 43.36789],
-                    [-70.94416, 43.46633],
-                    [-71.08482, 45.30524],
-                    [-70.66002, 45.46022],
-                    [-70.30495, 45.91479],
-                    [-70.00014, 46.69317],
-                    [-69.23708, 47.44777],
-                    [-68.90478, 47.18479],
-                    [-68.2343, 47.35462],
-                    [-67.79035, 47.06624],
-                    [-67.79141, 45.70258],
-                    [-67.13734, 45.13745],
-                  ],
-                ],
-              },
-            },
+            data: geoJSON,
+            // data: geoData,
           });
         }
 
-        // Add a new layer to visualize the polygon.
-        if (map.current.getLayer("maine-fill") == null) {
+        // Fill
+        if (map.current.getLayer(`pol-fill`) == null) {
           map.current.addLayer({
-            id: "maine-fill",
+            id: `pol-fill`,
             type: "fill",
-            source: "maine", // reference the data source
+            source: `pol`, // reference the data source
             layout: {},
             paint: {
-              "fill-color": "#0080ff", // blue color fill
-              "fill-opacity": 0.5,
+              "fill-color": "#FF3C00",
+              // "fill-opacity": 0.35,
+              "fill-opacity": [
+                "case",
+                ["boolean", ["feature-state", "hover"], false],
+                0.7,
+                0.35,
+              ],
             },
           });
         }
 
-        // Add a black outline around the polygon.
-        if (map.current.getLayer("maine-outline") == null) {
+        // Outline
+        if (map.current.getLayer("pol-outline") == null) {
           map.current.addLayer({
-            id: "maine-outline",
+            id: "pol-outline",
             type: "line",
-            source: "maine",
+            source: `pol`,
             layout: {},
             paint: {
-              "line-color": "#000",
-              "line-width": 3,
+              "line-color": "#000000",
+              "line-width": 0.8,
             },
           });
         }
+
+        // Set initial feature state
+        map.current.setFeatureState(
+          { source: "pol", id: hoveredStateId.current },
+          { hover: false }
+        );
       });
     }
+
+    map.current.on("mousemove", `pol-fill`, handleMouseMove);
+    map.current.on("mouseleave", `pol-fill`, handleMouseLeave);
+
+    return () => {
+      map.current.off("mousemove", `pol-fill`, handleMouseMove);
+      map.current.off("mouseleave", `pol-fill`, handleMouseLeave);
+    };
   }, []);
 
   useEffect(() => {
@@ -103,6 +100,45 @@ function Map() {
       setZoom(map.current.getZoom().toFixed(2));
     });
   });
+
+  const handleMouseMove = (e) => {
+    if (e.features.length > 0) {
+      // console.log(e.features[0]);
+      // console.log(hoveredFeature);
+      // console.log(hoveredStateId.current);
+
+      // hoveredStateId.current = e.features[0].properties["LGA_CODE22"];
+
+      // console.log(hoveredStateId.current);
+
+      if (hoveredStateId.current !== null) {
+        map.current.setFeatureState(
+          { source: `pol`, id: hoveredStateId.current },
+          { hover: false }
+        );
+      }
+
+      hoveredStateId.current = e.features[0].id;
+      if (hoveredStateId.current !== undefined) {
+        hoveredStateId.current = e.features[0].id;
+
+        map.current.setFeatureState(
+          { source: `pol`, id: hoveredStateId.current },
+          { hover: true }
+        );
+      }
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (hoveredStateId.current !== null) {
+      map.current.setFeatureState(
+        { source: "pol", id: hoveredStateId.current },
+        { hover: false }
+      );
+    }
+    hoveredStateId.current = null;
+  };
 
   return (
     <div>
