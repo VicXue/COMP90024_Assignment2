@@ -7,6 +7,7 @@ from mastodon import Mastodon, StreamListener
 import harvester_util
 
 # Grab the admin account for the CouchDB Cluster.
+couchdb_url = os.environ.get("DB_URL")
 couchdb_admin = os.environ.get("DB_USER")
 couchdb_password = os.environ.get("DB_PASSWORD")
 
@@ -15,7 +16,7 @@ mastodon_server = os.environ.get("MASTODON_SERVER")
 mastodon_token = os.environ.get("MASTODON_TOKEN")
 
 # Initialise a CouchDB server.
-couchdb_url = f'http://{couchdb_admin}:{couchdb_password}@172.26.134.0:5984/'
+couchdb_url = f'http://{couchdb_admin}:{couchdb_password}@{couchdb_url}:5984/'
 couch = couchdb.Server(couchdb_url)
 
 # A list consisting of the names of the two databases employed in the project

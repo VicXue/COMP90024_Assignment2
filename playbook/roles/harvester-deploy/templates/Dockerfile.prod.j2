@@ -3,6 +3,7 @@ COPY . ./
 
 ENV MASTODON_SERVER={{mastodon_server}}
 ENV MASTODON_TOKEN={{mastodon_token}}
+ENV DB_URL={{couchdb_service_name}}
 ENV DB_USER={{couchdb_user}}
 ENV DB_PASSWORD={{couchdb_pass}}
 
