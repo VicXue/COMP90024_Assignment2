@@ -17,6 +17,7 @@ import (
 
 var db_user = os.Getenv("DB_USER")
 var db_pass = os.Getenv("DB_PASSWORD")
+var db_host = os.Getenv("DB_HOST")
 
 func main() {
 	r := gin.Default()
@@ -52,8 +53,8 @@ func main() {
 
 func getTwitterSentiment(g *gin.Context) {
 	url := fmt.Sprintf(
-		"http://%v:%v@172.26.134.155:5984/tweets/_design/tw_sentiment/_view/avg_gcc_sentiment?group_level=1",
-		db_user, db_pass)
+		"http://%v:%v@%v:5984/tweets/_design/tw_sentiment/_view/avg_gcc_sentiment?group_level=1",
+		db_user, db_pass, db_host)
 	data, err := getData(url)
 	if err != nil {
 		log.Fatalln(err)
@@ -63,8 +64,8 @@ func getTwitterSentiment(g *gin.Context) {
 
 func getTwitterCount(g *gin.Context) {
 	url := fmt.Sprintf(
-		"http://%v:%v@172.26.134.155:5984/tweets/_design/tw_count/_view/count_sentiment?group_level=1",
-		db_user, db_pass)
+		"http://%v:%v@%v:5984/tweets/_design/tw_count/_view/count_sentiment?group_level=1",
+		db_user, db_pass, db_host)
 	data, err := getData(url)
 	if err != nil {
 		log.Fatalln(err)
@@ -74,8 +75,8 @@ func getTwitterCount(g *gin.Context) {
 
 func getMastodonMentalCount(g *gin.Context) {
 	url := fmt.Sprintf(
-		"http://%v:%v@172.26.134.155:5984/mental_disabled_db/_design/mastodon_mental_count/_view/count_view?group_level=1",
-		db_user, db_pass)
+		"http://%v:%v@%v:5984/mental_disabled_db/_design/mastodon_mental_count/_view/count_view?group_level=1",
+		db_user, db_pass, db_host)
 	data, err := getData(url)
 	if err != nil {
 		log.Fatalln(err)
@@ -85,8 +86,8 @@ func getMastodonMentalCount(g *gin.Context) {
 
 func getMastodonMentalOutput(g *gin.Context) {
 	url := fmt.Sprintf(
-		"http://%v:%v@172.26.134.155:5984/mental_disabled_db/_design/mastodon_mental_output/_view/avg_score_view?group_level=1",
-		db_user, db_pass)
+		"http://%v:%v@%v:5984/mental_disabled_db/_design/mastodon_mental_output/_view/avg_score_view?group_level=1",
+		db_user, db_pass, db_host)
 	data, err := getData(url)
 	if err != nil {
 		log.Fatalln(err)
@@ -96,8 +97,8 @@ func getMastodonMentalOutput(g *gin.Context) {
 
 func getMastodonNonMentalCount(g *gin.Context) {
 	url := fmt.Sprintf(
-		"http://%v:%v@172.26.134.155:5984/non_mental_disabled_db/_design/mastodon_non_mental_count/_view/count_view?group_level=1",
-		db_user, db_pass)
+		"http://%v:%v@%v:5984/non_mental_disabled_db/_design/mastodon_non_mental_count/_view/count_view?group_level=1",
+		db_user, db_pass, db_host)
 	data, err := getData(url)
 	if err != nil {
 		log.Fatalln(err)
@@ -107,8 +108,8 @@ func getMastodonNonMentalCount(g *gin.Context) {
 
 func getMastodonNonMentalOutput(g *gin.Context) {
 	url := fmt.Sprintf(
-		"http://%v:%v@172.26.134.155:5984/non_mental_disabled_db/_design/mastodon_non_mental_output/_view/avg_score_view?group_level=1",
-		db_user, db_pass)
+		"http://%v:%v@%v:5984/non_mental_disabled_db/_design/mastodon_non_mental_output/_view/avg_score_view?group_level=1",
+		db_user, db_pass, db_host)
 	data, err := getData(url)
 	if err != nil {
 		log.Fatalln(err)
