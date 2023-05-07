@@ -1,9 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	docs "example/docs"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -14,49 +15,123 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-// @BasePath /api/v1
-
-// PingExample godoc
-// @Summary preturn docs in the order db
-// @Schemes
-// @Description return docs in the order db
-// @Tags example
-// @Accept json
-// @Produce json
-// @Success 200 {string} FetchDocs
-// @Router /example/fetchdocs [get]
-func FetchDocs(g *gin.Context) {
-	db_host := os.Getenv("DB_HOST")
-	db_user := os.Getenv("DB_USER")
-	db_pass := os.Getenv("DB_PASS")
-	resp, err := http.Get(fmt.Sprintf("http://%v:%v@%v:5984/orders/_all_docs", db_user, db_pass, db_host))
-	if err != nil {
-		log.Fatalln(err)
-	}
-	//We Read the response body on the line below.
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	//Convert the body to type string
-	sb := string(body)
-	log.Printf(sb)
-	g.JSON(http.StatusOK, sb)
-}
+var db_user = os.Getenv("DB_USER")
+var db_pass = os.Getenv("DB_PASSWORD")
 
 func main() {
 	r := gin.Default()
-	// Enable CORS middleware
 	r.Use(cors.Default())
+
 	docs.SwaggerInfo.BasePath = "/api/v1"
+
 	v1 := r.Group("/api/v1")
 	{
-		eg := v1.Group("/example")
+		twitter := v1.Group("/twitter")
 		{
-			eg.GET("/fetchdocs", FetchDocs)
+			twitter.GET("/sentiment", getTwitterSentiment)
+			twitter.GET("/count", getTwitterCount)
+		}
+		mastodon := v1.Group("/mastodon")
+		{
+			mental := mastodon.Group("/mental")
+			{
+				mental.GET("/count", getMastodonMentalCount)
+				mental.GET("/output", getMastodonMentalOutput)
+			}
+			nonMental := mastodon.Group("/non-mental")
+			{
+				nonMental.GET("/count", getMastodonNonMentalCount)
+				nonMental.GET("/output", getMastodonNonMentalOutput)
+			}
 		}
 	}
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 	r.Run(":8080")
+}
+
+func getTwitterSentiment(g *gin.Context) {
+	url := fmt.Sprintf(
+		"http://%v:%v@172.26.134.155:5984/tweets/_design/tw_sentiment/_view/avg_gcc_sentiment?group_level=1",
+		db_user, db_pass)
+	data, err := getData(url)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	g.JSON(http.StatusOK, gin.H{"data": data})
+}
+
+func getTwitterCount(g *gin.Context) {
+	url := fmt.Sprintf(
+		"http://%v:%v@172.26.134.155:5984/tweets/_design/tw_count/_view/count_sentiment?group_level=1",
+		db_user, db_pass)
+	data, err := getData(url)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	g.JSON(http.StatusOK, gin.H{"data": data})
+}
+
+func getMastodonMentalCount(g *gin.Context) {
+	url := fmt.Sprintf(
+		"http://%v:%v@172.26.134.155:5984/mental_disabled_db/_design/mastodon_mental_count/_view/count_view?group_level=1",
+		db_user, db_pass)
+	data, err := getData(url)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	g.JSON(http.StatusOK, gin.H{"data": data})
+}
+
+func getMastodonMentalOutput(g *gin.Context) {
+	url := fmt.Sprintf(
+		"http://%v:%v@172.26.134.155:5984/mental_disabled_db/_design/mastodon_mental_output/_view/avg_score_view?group_level=1",
+		db_user, db_pass)
+	data, err := getData(url)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	g.JSON(http.StatusOK, gin.H{"data": data})
+}
+
+func getMastodonNonMentalCount(g *gin.Context) {
+	url := fmt.Sprintf(
+		"http://%v:%v@172.26.134.155:5984/non_mental_disabled_db/_design/mastodon_non_mental_count/_view/count_view?group_level=1",
+		db_user, db_pass)
+	data, err := getData(url)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	g.JSON(http.StatusOK, gin.H{"data": data})
+}
+
+func getMastodonNonMentalOutput(g *gin.Context) {
+	url := fmt.Sprintf(
+		"http://%v:%v@172.26.134.155:5984/non_mental_disabled_db/_design/mastodon_non_mental_output/_view/avg_score_view?group_level=1",
+		db_user, db_pass)
+	data, err := getData(url)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	g.JSON(http.StatusOK, gin.H{"data": data})
+}
+
+func getData(url string) (map[string]interface{}, error) {
+	resp, err := http.Get(url)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	body, _ := io.ReadAll(resp.Body)
+
+	var raw map[string]interface{}
+
+	if err := json.Unmarshal(body, &raw); err != nil {
+		return nil, err
+	}
+
+	return raw, nil
 }
