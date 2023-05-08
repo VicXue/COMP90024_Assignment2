@@ -10,15 +10,18 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "contact": {},
+        "contact": {
+            "name": "Quanchi Chen",
+            "email": "quanchic@student.unimelb.edu.au"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/example/fetchdocs": {
+        "/mastodon/mental/count": {
             "get": {
-                "description": "return docs in the order db",
+                "description": "return the mastodon_mental_count MapReduce view in the mental_disabled_db database",
                 "consumes": [
                     "application/json"
                 ],
@@ -26,9 +29,124 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "example"
+                    "mastodon"
                 ],
-                "summary": "preturn docs in the order db",
+                "summary": "return mastodon_mental_count",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/mastodon/mental/output": {
+            "get": {
+                "description": "return the mastodon_mental_output MapReduce view in the mental_disabled_db database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mastodon"
+                ],
+                "summary": "return mastodon_mental_output",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/mastodon/non-mental/count": {
+            "get": {
+                "description": "return the mastodon_non_mental_count MapReduce view in the non_mental_disabled_db database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mastodon"
+                ],
+                "summary": "return mastodon_non_mental_count",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/mastodon/non-mental/output": {
+            "get": {
+                "description": "return the mastodon_non_mental_output MapReduce view in the non_mental_disabled_db database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mastodon"
+                ],
+                "summary": "return mastodon_non_mental_output",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/twitter/count": {
+            "get": {
+                "description": "return the tw_count MapReduce view in the tweets database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "twitter"
+                ],
+                "summary": "return tw_count",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/twitter/sentiment": {
+            "get": {
+                "description": "return the tw_sentiment MapReduce view in the tweets database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "twitter"
+                ],
+                "summary": "return tw_sentiment",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -44,12 +162,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
+	Version:          "1.0",
 	Host:             "",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	Title:            "Team 3 Gin Web Service",
+	Description:      "A web service API in Go using Gin framework",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
