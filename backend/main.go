@@ -51,6 +51,23 @@ func main() {
 	r.Run(":8080")
 }
 
+// @title           Team 3 Gin Web Service
+// @version         1.0
+// @description     A web service API in Go using Gin framework
+
+// @contact.name    Quanchi Chen
+// @contact.email   quanchic@student.unimelb.edu.au
+
+// @host            localhost:8080
+// @BasePath        /api/v1
+
+// @Summary return tw_sentiment 
+// @Description return the tw_sentiment MapReduce view in the tweets database
+// @Tags twitter
+// @Accept json
+// @Produce json
+// @Success 200 {string} getTwitterSentiment
+// @Router /twitter/sentiment [get]
 func getTwitterSentiment(g *gin.Context) {
 	url := fmt.Sprintf(
 		"http://%v:%v@%v:5984/tweets/_design/tw_sentiment/_view/avg_gcc_sentiment?group_level=1",
@@ -62,6 +79,13 @@ func getTwitterSentiment(g *gin.Context) {
 	g.JSON(http.StatusOK, gin.H{"data": data})
 }
 
+// @Summary return tw_count
+// @Description return the tw_count MapReduce view in the tweets database
+// @Tags twitter
+// @Accept json
+// @Produce json
+// @Success 200 {string} getTwitterCount
+// @Router /twitter/count [get]
 func getTwitterCount(g *gin.Context) {
 	url := fmt.Sprintf(
 		"http://%v:%v@%v:5984/tweets/_design/tw_count/_view/count_sentiment?group_level=1",
@@ -73,6 +97,13 @@ func getTwitterCount(g *gin.Context) {
 	g.JSON(http.StatusOK, gin.H{"data": data})
 }
 
+// @Summary return mastodon_mental_count
+// @Description return the mastodon_mental_count MapReduce view in the mental_disabled_db database
+// @Tags mastodon
+// @Accept json
+// @Produce json
+// @Success 200 {string} getMastodonMentalCount
+// @Router /mastodon/mental/count [get]
 func getMastodonMentalCount(g *gin.Context) {
 	url := fmt.Sprintf(
 		"http://%v:%v@%v:5984/mental_disabled_db/_design/mastodon_mental_count/_view/count_view?group_level=1",
@@ -84,6 +115,13 @@ func getMastodonMentalCount(g *gin.Context) {
 	g.JSON(http.StatusOK, gin.H{"data": data})
 }
 
+// @Summary return mastodon_mental_output
+// @Description return the mastodon_mental_output MapReduce view in the mental_disabled_db database
+// @Tags mastodon
+// @Accept json
+// @Produce json
+// @Success 200 {string} getMastodonMentalOutput
+// @Router /mastodon/mental/output [get]
 func getMastodonMentalOutput(g *gin.Context) {
 	url := fmt.Sprintf(
 		"http://%v:%v@%v:5984/mental_disabled_db/_design/mastodon_mental_output/_view/avg_score_view?group_level=1",
@@ -95,6 +133,13 @@ func getMastodonMentalOutput(g *gin.Context) {
 	g.JSON(http.StatusOK, gin.H{"data": data})
 }
 
+// @Summary return mastodon_non_mental_count
+// @Description return the mastodon_non_mental_count MapReduce view in the non_mental_disabled_db database
+// @Tags mastodon
+// @Accept json
+// @Produce json
+// @Success 200 {string} getMastodonNonMentalCount
+// @Router /mastodon/non-mental/count [get]
 func getMastodonNonMentalCount(g *gin.Context) {
 	url := fmt.Sprintf(
 		"http://%v:%v@%v:5984/non_mental_disabled_db/_design/mastodon_non_mental_count/_view/count_view?group_level=1",
@@ -106,6 +151,13 @@ func getMastodonNonMentalCount(g *gin.Context) {
 	g.JSON(http.StatusOK, gin.H{"data": data})
 }
 
+// @Summary return mastodon_non_mental_output
+// @Description return the mastodon_non_mental_output MapReduce view in the non_mental_disabled_db database
+// @Tags mastodon
+// @Accept json
+// @Produce json
+// @Success 200 {string} getMastodonNonMentalOutput
+// @Router /mastodon/non-mental/output [get]
 func getMastodonNonMentalOutput(g *gin.Context) {
 	url := fmt.Sprintf(
 		"http://%v:%v@%v:5984/non_mental_disabled_db/_design/mastodon_non_mental_output/_view/avg_score_view?group_level=1",
