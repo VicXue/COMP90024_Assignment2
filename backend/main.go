@@ -16,7 +16,7 @@ import (
 )
 
 var db_user = os.Getenv("DB_USER")
-var db_pass = os.Getenv("DB_PASSWORD")
+var db_pass = os.Getenv("DB_PASS")
 var db_host = os.Getenv("DB_HOST")
 
 func main() {
