@@ -58,10 +58,9 @@ func main() {
 // @contact.name    Quanchi Chen
 // @contact.email   quanchic@student.unimelb.edu.au
 
-// @host            localhost:8080
 // @BasePath        /api/v1
 
-// @Summary return tw_sentiment 
+// @Summary return tw_sentiment
 // @Description return the tw_sentiment MapReduce view in the tweets database
 // @Tags twitter
 // @Accept json
