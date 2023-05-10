@@ -6,10 +6,13 @@ import geoJSON from "../../data/lga_copy.geojson";
 mapboxgl.accessToken =
   "pk.eyJ1Ijoiam9obm55bXUiLCJhIjoiY2xoMGtuNjZhMDdwNjNybndqcmRmc3Y4NCJ9.G5G_PRIPl1394Dg1QBjhpA";
 
-function Map() {
+function VictoriaMap() {
+  const [popup, setPopup] = useState(null);
+
   const mapContainer = useRef(null);
   const map = useRef(null);
   const hoveredStateId = useRef(null);
+  const popupRef = useRef(null);
 
   const [lng, setLng] = useState(144.9631);
   const [lat, setLat] = useState(-36.8136);
@@ -79,6 +82,12 @@ function Map() {
           { source: "pol", id: hoveredStateId.current },
           { hover: false }
         );
+
+        // Pop-Up
+        popupRef.current = new mapboxgl.Popup({
+          closeButton: false,
+          closeOnClick: false,
+        });
       });
     }
 
@@ -126,6 +135,16 @@ function Map() {
           { hover: true }
         );
       }
+
+      const prop = e.features[0].properties;
+      // console.log(prop);
+      const coordinates = e.lngLat;
+
+      // Update the popup content
+      popupRef.current
+        .setLngLat(coordinates)
+        .setHTML(`<h4>${prop.LGA_NAME22}</h4><h4>1: ${prop.estmd_nm_1}</h4><h4>2: ${prop.estmd_nm_2}</h4><h4>3: ${prop.estmd_nmbr}</h4>`)
+        .addTo(map.current);
     }
   };
 
@@ -137,10 +156,13 @@ function Map() {
       );
     }
     hoveredStateId.current = null;
+
+    // Remove the popup
+    popupRef.current.remove();
   };
 
   return (
-    <div>
+    <div className="map-area">
       <div className="sidebar">
         Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
       </div>
@@ -149,4 +171,4 @@ function Map() {
   );
 }
 
-export default Map;
+export default VictoriaMap;
