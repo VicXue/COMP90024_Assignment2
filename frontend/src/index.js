@@ -1,8 +1,8 @@
 import React from "react";
-import ReactDOM from 'react-dom/client';
+import ReactDOM from "react-dom/client";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./index.css";
-import "./override.css"
+import "./override.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 

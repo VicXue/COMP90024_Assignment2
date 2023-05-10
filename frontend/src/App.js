@@ -1,5 +1,5 @@
 // import logo from './logo.svg';
-// import Home from "./components/GoogleMap/GoogleMap";
+import Navbar from "./components/NavBar/NavBar";
 import VictoriaMap from "./components/VictoriaMap/VictoriaMap";
 import AuMap from "./components/AuMap/AuMap";
 import SUDOLineChart from "./components/SUDOLineChart/LineChart";
@@ -46,8 +46,8 @@ function App() {
     //     </div>
     //   </header>
     // </div>
+
     <div>
-      {/* <FetchJson /> */}
       <AuMap />
       {/* <VictoriaMap /> */}
       {/* <SUDOLineChart /> */}
