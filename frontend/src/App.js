@@ -1,7 +1,10 @@
 // import logo from './logo.svg';
 // import Home from "./components/GoogleMap/GoogleMap";
 import VictoriaMap from "./components/VictoriaMap/VictoriaMap";
-import LineChart from "./components/Line/Line";
+import AuMap from "./components/AuMap/AuMap";
+import SUDOLineChart from "./components/SUDOLineChart/LineChart";
+import TwBarChart from "./components/TwitterBarChart/TwBarChart";
+
 import React, { useEffect, useState } from "react";
 
 import "./App.css";
@@ -44,8 +47,11 @@ function App() {
     //   </header>
     // </div>
     <div>
-      <VictoriaMap />
-      {/* <LineChart /> */}
+      {/* <FetchJson /> */}
+      <AuMap />
+      {/* <VictoriaMap /> */}
+      {/* <SUDOLineChart /> */}
+      {/* <TwBarChart /> */}
     </div>
   );
 }

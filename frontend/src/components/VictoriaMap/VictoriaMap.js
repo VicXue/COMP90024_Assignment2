@@ -7,8 +7,6 @@ mapboxgl.accessToken =
   "pk.eyJ1Ijoiam9obm55bXUiLCJhIjoiY2xoMGtuNjZhMDdwNjNybndqcmRmc3Y4NCJ9.G5G_PRIPl1394Dg1QBjhpA";
 
 function VictoriaMap() {
-  const [popup, setPopup] = useState(null);
-
   const mapContainer = useRef(null);
   const map = useRef(null);
   const hoveredStateId = useRef(null);
@@ -17,6 +15,8 @@ function VictoriaMap() {
   const [lng, setLng] = useState(144.9631);
   const [lat, setLat] = useState(-36.8136);
   const [zoom, setZoom] = useState(6);
+
+  console.log(geoJSON);
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
@@ -39,7 +39,6 @@ function VictoriaMap() {
           map.current.addSource(`pol`, {
             type: "geojson",
             data: geoJSON,
-            // data: geoData,
           });
         }
 
@@ -143,7 +142,9 @@ function VictoriaMap() {
       // Update the popup content
       popupRef.current
         .setLngLat(coordinates)
-        .setHTML(`<h4>${prop.LGA_NAME22}</h4><h4>1: ${prop.estmd_nm_1}</h4><h4>2: ${prop.estmd_nm_2}</h4><h4>3: ${prop.estmd_nmbr}</h4>`)
+        .setHTML(
+          `<h4>${prop.LGA_NAME22}</h4><h4>1: ${prop.estmd_nm_1}</h4><h4>2: ${prop.estmd_nm_2}</h4><h4>3: ${prop.estmd_nmbr}</h4>`
+        )
         .addTo(map.current);
     }
   };
