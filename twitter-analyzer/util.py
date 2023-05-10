@@ -10,8 +10,8 @@ from nltk.stem import PorterStemmer
 from nltk import word_tokenize
 
 USER = "admin"
-PASSWORD = "DbPassword.1"
-BASE_URL = "http://172.26.134.0:5984/"
+PASSWORD = os.environ.get('DB_PASS')
+BASE_URL = os.environ.get('DB_URL')
 DB_NAME = "tweets"
 DB_SESSION = requests.Session()
 DB_SESSION.auth = (USER, PASSWORD)
