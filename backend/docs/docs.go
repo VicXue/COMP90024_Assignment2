@@ -19,6 +19,52 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/geography/gcc": {
+            "get": {
+                "description": "return gcc_pt in the geography_db database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "geography"
+                ],
+                "summary": "return gcc_pt",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/geography/lga": {
+            "get": {
+                "description": "return lga_copy in the geography_db database",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "geography"
+                ],
+                "summary": "return lga_copy",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/mastodon/mental/count": {
             "get": {
                 "description": "return the mastodon_mental_count MapReduce view in the mental_disabled_db database",
@@ -167,7 +213,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Team 3 Gin Web Service",
-	Description:      "A web service API in Go using Gin framework",
+	Description:      "A web service API in Go using the Gin framework",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
