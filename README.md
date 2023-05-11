@@ -22,22 +22,22 @@ p.s. Due to the intrinsics of docker swarm, the CouchDB cluster may not finish i
 
 - CouchDB
     - [x] Docker Swarm Deployment
-    - [ ] Photon
-    - [ ] Secret Hiding via Ansible Vault
-    - [ ] DB Admin credentials are open in the repo, may need to update it to use ansible vault, but it's low priority for now.
+    - [x] Photon
+    - [ ] Secret Hiding via Ansible Vault.
+    
+          DB Admin credentials are open in the repo, may need to update it to use ansible vault, but it's low priority for now.
 - Harvester
-    - [ ] Elaboration
+    - [x] Elaboration
     - [x] Docker Swarm Deployment
 - API
-    - [ ] Elaboration
+    - [x] Elaboration
     - [x] Docker Swarm Deployment
 - Frontend
-    - [ ] Elaboration
+    - [x] Elaboration
     - [x] Docker Swarm Deployment
 - Analyser
-    - [ ] Elaboration
-    - [ ] Development
-    - [ ] Docker Container Deployment
+    - [x] Elaboration
+    - [x] Development
     
 ## Notes
 CouchDB cluster is ready to play with. Go to MRC and find our project. You can use any instance's IP to access it. The url to the GUI is `<IP>:5984/_utils/`. Username and password can be found [here](/playbook/variables/couchdb-vars.yaml#L6-L7).
