@@ -3,10 +3,40 @@ info:
   contact:
     email: quanchic@student.unimelb.edu.au
     name: Quanchi Chen
-  description: A web service API in Go using Gin framework
+  description: A web service API in Go using the Gin framework
   title: Team 3 Gin Web Service
   version: "1.0"
 paths:
+  /geography/gcc:
+    get:
+      consumes:
+      - application/json
+      description: return gcc_pt in the geography_db database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: return gcc_pt
+      tags:
+      - geography
+  /geography/lga:
+    get:
+      consumes:
+      - application/json
+      description: return lga_copy in the geography_db database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: return lga_copy
+      tags:
+      - geography
   /mastodon/mental/count:
     get:
       consumes:
