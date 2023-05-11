@@ -1,5 +1,5 @@
 // import logo from './logo.svg';
-import Navbar from "./components/NavBar/NavBar";
+import NavBar from "./components/NavBar/NavBar";
 import VictoriaMap from "./components/VictoriaMap/VictoriaMap";
 import AuMap from "./components/AuMap/AuMap";
 import SUDOLineChart from "./components/SUDOLineChart/LineChart";
@@ -8,6 +8,7 @@ import NonMental from "./components/MasPieChart/NonMental";
 import TwBarChart from "./components/TwitterBarChart/TwBarChart";
 
 import React, { useEffect, useState } from "react";
+import { Route, Routes } from "react-router-dom";
 
 import "./App.css";
 
@@ -50,12 +51,15 @@ function App() {
     // </div>
 
     <div>
-      {/* <AuMap /> */}
-      {/* <VictoriaMap /> */}
-      {/* <SUDOLineChart /> */}
-      {/* <TwBarChart /> */}
-      <Mental />
-      {/* <NonMental /> */}
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<VictoriaMap />} />
+        <Route path="/AuMap" element={<AuMap />} />
+        <Route path="/SUDOLineChart" element={<SUDOLineChart />} />
+        <Route path="/TwBarChart" element={<TwBarChart />} />
+        <Route path="/Mental" element={<Mental />} />
+        <Route path="/NonMental" element={<NonMental />} />
+      </Routes>
     </div>
   );
 }
