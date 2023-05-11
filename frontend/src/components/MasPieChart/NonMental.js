@@ -31,6 +31,7 @@ export default function NonMental() {
     const fetchData = async () => {
       try {
         const response = await fetch(
+          // `${process.env.REACT_APP_BACKEND_API_HOST}:8080/api/v1/mastodon/non-mental/ouput`
           "http://172.26.134.155:8080/api/v1/mastodon/non-mental/output"
         );
         const jsonData = await response.json();

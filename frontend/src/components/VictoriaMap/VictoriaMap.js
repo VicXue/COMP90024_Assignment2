@@ -3,6 +3,7 @@ import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-load
 
 import geoJSON from "../../data/lga_copy.geojson";
 
+// mapboxgl.accessToken = process.env.REACT_APP_MAP_BOX_TOKEN;
 mapboxgl.accessToken =
   "pk.eyJ1Ijoiam9obm55bXUiLCJhIjoiY2xoMGtuNjZhMDdwNjNybndqcmRmc3Y4NCJ9.G5G_PRIPl1394Dg1QBjhpA";
 
@@ -15,8 +16,43 @@ function VictoriaMap() {
   const [lng, setLng] = useState(144.9631);
   const [lat, setLat] = useState(-36.8136);
   const [zoom, setZoom] = useState(6);
+  const [geoJSONData, setGeoJSONData] = useState(null);
 
-  console.log(geoJSON);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch(geoJSON);
+  //       const jsonData = await response.json();
+  //       console.log(jsonData);
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+  // useEffect(() => {
+  //   const fetchGeoJSON = async () => {
+  //     try {
+  //       const response = await fetch(
+  //         // `${process.env.REACT_APP_BACKEND_API_HOST}:8080/api/v1/geography/lga`
+  //         `http://172.26.134.155:8080/api/v1/geography/lga`
+  //       );
+  //       const data = await response.json();
+
+  //       delete data.data["_id"];
+  //       delete data.data["_rev"];
+  //       // console.log(data.data);
+
+  //       setGeoJSONData(data.data);
+  //     } catch (error) {
+  //       console.error("Error fetching GeoJSON data:", error);
+  //     }
+  //   };
+
+  //   fetchGeoJSON();
+  // }, []);
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
@@ -33,6 +69,7 @@ function VictoriaMap() {
     else {
       if (!geoJSON) return;
 
+      // console.log(geoJSONData);
       map.current.on("load", () => {
         //Source
         if (map.current.getSource(`pol`) == null) {

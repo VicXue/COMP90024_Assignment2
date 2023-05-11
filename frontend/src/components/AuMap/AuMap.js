@@ -1,8 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
 
-import geoJSON from "../../data/gcc_pt.geojson";
-
+// mapboxgl.accessToken = process.env.REACT_APP_MAP_BOX_TOKEN;
 mapboxgl.accessToken =
   "pk.eyJ1Ijoiam9obm55bXUiLCJhIjoiY2xoMGtuNjZhMDdwNjNybndqcmRmc3Y4NCJ9.G5G_PRIPl1394Dg1QBjhpA";
 
@@ -18,7 +17,10 @@ function AuMap() {
   useEffect(() => {
     const fetchGeoJSON = async () => {
       try {
-        const response = await fetch(geoJSON);
+        const response = await fetch(
+          // `${process.env.REACT_APP_BACKEND_API_HOST}:8080/api/v1/geography/gcc`
+          `http://172.26.134.155:8080/api/v1/geography/gcc`
+        );
         const data = await response.json();
         setGeoJSONData(data);
       } catch (error) {
@@ -52,7 +54,6 @@ function AuMap() {
     if (!map.current) return;
     else {
       if (!geoJSONData) return;
-
       map.current.on("load", () => {
         // console.log(geoJSONData);
 
@@ -60,7 +61,7 @@ function AuMap() {
         // markers.forEach((marker) => marker.remove());
 
         // Add markers
-        geoJSONData.features.map((feature) => {
+        geoJSONData.data.features.map((feature) => {
           const marker = new mapboxgl.Marker()
             .setLngLat(feature.geometry.coordinates)
             .addTo(map.current);
