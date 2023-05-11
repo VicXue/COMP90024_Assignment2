@@ -3,6 +3,8 @@ import Navbar from "./components/NavBar/NavBar";
 import VictoriaMap from "./components/VictoriaMap/VictoriaMap";
 import AuMap from "./components/AuMap/AuMap";
 import SUDOLineChart from "./components/SUDOLineChart/LineChart";
+import Mental from "./components/MasBarChart/Mental";
+import NonMental from "./components/MasBarChart/NonMental";
 import TwBarChart from "./components/TwitterBarChart/TwBarChart";
 
 import React, { useEffect, useState } from "react";
@@ -48,10 +50,12 @@ function App() {
     // </div>
 
     <div>
-      <AuMap />
+      {/* <AuMap /> */}
       {/* <VictoriaMap /> */}
       {/* <SUDOLineChart /> */}
       {/* <TwBarChart /> */}
+      {/* <Mental /> */}
+      <NonMental />
     </div>
   );
 }

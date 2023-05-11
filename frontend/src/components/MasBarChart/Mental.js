@@ -27,7 +27,7 @@ export const options = {
     },
     title: {
       display: true,
-      text: "Twitter Bar Chart",
+      text: "Mastodon Bar Chart",
     },
   },
 };
@@ -38,18 +38,18 @@ const labels = [
   "Avg Positive Score",
 ];
 
-export default function TwBarChart() {
-  const [twData, setTwData] = useState(null);
+export default function Mental() {
+  const [mentalData, setmentalData] = useState(null);
   const [chartData, setChartData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://172.26.134.155:8080/api/v1/twitter/sentiment"
+          "http://172.26.134.155:8080/api/v1/mastodon/mental/output"
         );
         const jsonData = await response.json();
-        setTwData(jsonData);
+        setmentalData(jsonData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -59,20 +59,21 @@ export default function TwBarChart() {
   }, []);
 
   useEffect(() => {
-    if (twData) {
-      console.log(twData.data.rows);
+    if (mentalData) {
+      console.log(mentalData);
+      // console.log(mentalData.data.rows);
 
-      const cur_row = twData.data.rows[0].value;
+      const cur_row = mentalData.data.rows[0].value;
 
       const tempData = {
         labels,
         datasets: [
           {
-            label: "1gsyd",
+            label: "Mental",
             data: [
-              cur_row.negative_score_avg,
-              cur_row.neutral_score_avg,
-              cur_row.positive_score_avg,
+              cur_row.negative_count_avg,
+              cur_row.neutral_count_avg,
+              cur_row.positive_count_avg,
             ],
             backgroundColor: "rgba(255, 99, 132, 0.5)",
           },
@@ -81,7 +82,7 @@ export default function TwBarChart() {
 
       setChartData(tempData);
     }
-  }, [twData]);
+  }, [mentalData]);
 
   if (chartData) return <Bar options={options} data={chartData} />;
 }
