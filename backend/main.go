@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	docs "example/docs"
+	"example/docs"
 	"fmt"
 	"io"
 	"log"
@@ -15,9 +15,10 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-var db_user = os.Getenv("DB_USER")
-var db_pass = os.Getenv("DB_PASS")
-var db_host = os.Getenv("DB_HOST")
+// Retrieve necessary environment variables.
+var dbUser = os.Getenv("DB_USER")
+var dbPass = os.Getenv("DB_PASSWORD")
+var dbHost = os.Getenv("DB_HOST")
 
 func main() {
 	r := gin.Default()
@@ -45,15 +46,23 @@ func main() {
 				nonMental.GET("/output", getMastodonNonMentalOutput)
 			}
 		}
+		geography := v1.Group("/geography")
+		{
+			geography.GET("/gcc", getGeographyGCCData)
+			geography.GET("/lga", getGeographyLGAData)
+		}
 	}
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-	r.Run(":8080")
+	err := r.Run(":8080")
+	if err != nil {
+		log.Fatalln("Server Started Unsuccessfully")
+	}
 }
 
 // @title           Team 3 Gin Web Service
 // @version         1.0
-// @description     A web service API in Go using Gin framework
+// @description     A web service API in Go using the Gin framework
 
 // @contact.name    Quanchi Chen
 // @contact.email   quanchic@student.unimelb.edu.au
@@ -67,15 +76,15 @@ func main() {
 // @Produce json
 // @Success 200 {string} getTwitterSentiment
 // @Router /twitter/sentiment [get]
-func getTwitterSentiment(g *gin.Context) {
+func getTwitterSentiment(c *gin.Context) {
 	url := fmt.Sprintf(
 		"http://%v:%v@%v:5984/tweets/_design/tw_sentiment/_view/avg_gcc_sentiment?group_level=1",
-		db_user, db_pass, db_host)
+		dbUser, dbPass, dbHost)
 	data, err := getData(url)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	g.JSON(http.StatusOK, gin.H{"data": data})
+	c.JSON(http.StatusOK, gin.H{"data": data})
 }
 
 // @Summary return tw_count
@@ -85,15 +94,15 @@ func getTwitterSentiment(g *gin.Context) {
 // @Produce json
 // @Success 200 {string} getTwitterCount
 // @Router /twitter/count [get]
-func getTwitterCount(g *gin.Context) {
+func getTwitterCount(c *gin.Context) {
 	url := fmt.Sprintf(
 		"http://%v:%v@%v:5984/tweets/_design/tw_count/_view/count_sentiment?group_level=1",
-		db_user, db_pass, db_host)
+		dbUser, dbPass, dbHost)
 	data, err := getData(url)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	g.JSON(http.StatusOK, gin.H{"data": data})
+	c.JSON(http.StatusOK, gin.H{"data": data})
 }
 
 // @Summary return mastodon_mental_count
@@ -103,15 +112,15 @@ func getTwitterCount(g *gin.Context) {
 // @Produce json
 // @Success 200 {string} getMastodonMentalCount
 // @Router /mastodon/mental/count [get]
-func getMastodonMentalCount(g *gin.Context) {
+func getMastodonMentalCount(c *gin.Context) {
 	url := fmt.Sprintf(
 		"http://%v:%v@%v:5984/mental_disabled_db/_design/mastodon_mental_count/_view/count_view?group_level=1",
-		db_user, db_pass, db_host)
+		dbUser, dbPass, dbHost)
 	data, err := getData(url)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	g.JSON(http.StatusOK, gin.H{"data": data})
+	c.JSON(http.StatusOK, gin.H{"data": data})
 }
 
 // @Summary return mastodon_mental_output
@@ -121,15 +130,15 @@ func getMastodonMentalCount(g *gin.Context) {
 // @Produce json
 // @Success 200 {string} getMastodonMentalOutput
 // @Router /mastodon/mental/output [get]
-func getMastodonMentalOutput(g *gin.Context) {
+func getMastodonMentalOutput(c *gin.Context) {
 	url := fmt.Sprintf(
 		"http://%v:%v@%v:5984/mental_disabled_db/_design/mastodon_mental_output/_view/avg_score_view?group_level=1",
-		db_user, db_pass, db_host)
+		dbUser, dbPass, dbHost)
 	data, err := getData(url)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	g.JSON(http.StatusOK, gin.H{"data": data})
+	c.JSON(http.StatusOK, gin.H{"data": data})
 }
 
 // @Summary return mastodon_non_mental_count
@@ -139,15 +148,15 @@ func getMastodonMentalOutput(g *gin.Context) {
 // @Produce json
 // @Success 200 {string} getMastodonNonMentalCount
 // @Router /mastodon/non-mental/count [get]
-func getMastodonNonMentalCount(g *gin.Context) {
+func getMastodonNonMentalCount(c *gin.Context) {
 	url := fmt.Sprintf(
 		"http://%v:%v@%v:5984/non_mental_disabled_db/_design/mastodon_non_mental_count/_view/count_view?group_level=1",
-		db_user, db_pass, db_host)
+		dbUser, dbPass, dbHost)
 	data, err := getData(url)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	g.JSON(http.StatusOK, gin.H{"data": data})
+	c.JSON(http.StatusOK, gin.H{"data": data})
 }
 
 // @Summary return mastodon_non_mental_output
@@ -157,15 +166,51 @@ func getMastodonNonMentalCount(g *gin.Context) {
 // @Produce json
 // @Success 200 {string} getMastodonNonMentalOutput
 // @Router /mastodon/non-mental/output [get]
-func getMastodonNonMentalOutput(g *gin.Context) {
+func getMastodonNonMentalOutput(c *gin.Context) {
 	url := fmt.Sprintf(
 		"http://%v:%v@%v:5984/non_mental_disabled_db/_design/mastodon_non_mental_output/_view/avg_score_view?group_level=1",
-		db_user, db_pass, db_host)
+		dbUser, dbPass, dbHost)
 	data, err := getData(url)
 	if err != nil {
 		log.Fatalln(err)
 	}
-	g.JSON(http.StatusOK, gin.H{"data": data})
+	c.JSON(http.StatusOK, gin.H{"data": data})
+}
+
+// @Summary return gcc_pt
+// @Description return gcc_pt in the geography_db database
+// @Tags geography
+// @Accept json
+// @Produce json
+// @Success 200 {string} getGeographyGCCData
+// @Router /geography/gcc [get]
+func getGeographyGCCData(c *gin.Context) {
+	url := fmt.Sprintf(
+		"http://%v:%v@%v:5984/geography_db/0db59c7ef8e1af81bf1079747c29fa28",
+		dbUser, dbPass, dbHost)
+	data, err := getData(url)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	c.JSON(http.StatusOK, gin.H{"data": data})
+}
+
+// @Summary return lga_copy
+// @Description return lga_copy in the geography_db database
+// @Tags geography
+// @Accept json
+// @Produce json
+// @Success 200 {string} getGeographyLGAData
+// @Router /geography/lga [get]
+func getGeographyLGAData(c *gin.Context) {
+	url := fmt.Sprintf(
+		"http://%v:%v@%v:5984/geography_db/b51ae8d6de3ee81bbf4fa816489148e4",
+		dbUser, dbPass, dbHost)
+	data, err := getData(url)
+	if err != nil {
+		log.Fatalln(err)
+	}
+	c.JSON(http.StatusOK, gin.H{"data": data})
 }
 
 func getData(url string) (map[string]interface{}, error) {
@@ -175,7 +220,12 @@ func getData(url string) (map[string]interface{}, error) {
 		return nil, err
 	}
 
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+	}(resp.Body)
 
 	body, _ := io.ReadAll(resp.Body)
 
