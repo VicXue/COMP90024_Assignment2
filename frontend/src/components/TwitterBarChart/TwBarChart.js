@@ -74,7 +74,11 @@ export default function TwBarChart() {
               cur_row.neutral_score_avg,
               cur_row.positive_score_avg,
             ],
-            backgroundColor: "rgba(255, 99, 132, 0.5)",
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.2)",
+              "rgba(54, 162, 235, 0.2)",
+              "rgba(255, 206, 86, 0.2)",
+            ],
           },
         ],
       };
