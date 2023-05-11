@@ -201,10 +201,10 @@ function VictoriaMap() {
 
   return (
     <div className="map-area">
-      <div className="sidebar">
+      <div className="vic-sidebar">
         Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
       </div>
-      <div ref={mapContainer} className="map-container" />
+      <div ref={mapContainer} className="vic-map-container" />
     </div>
   );
 }

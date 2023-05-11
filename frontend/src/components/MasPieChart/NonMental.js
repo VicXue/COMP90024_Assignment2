@@ -80,5 +80,11 @@ export default function NonMental() {
     }
   }, [mentalData]);
 
-  if (chartData) return <Pie options={options} data={chartData} />;
+  if (chartData) {
+    return (
+      <div className="non-mental-chart">
+        <Pie options={options} data={chartData} />
+      </div>
+    );
+  }
 }

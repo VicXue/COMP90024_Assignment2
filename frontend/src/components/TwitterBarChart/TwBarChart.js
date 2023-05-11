@@ -88,5 +88,11 @@ export default function TwBarChart() {
     }
   }, [twData]);
 
-  if (chartData) return <Bar options={options} data={chartData} />;
+  if (chartData) {
+    return (
+      <div className="tw-chart">
+        <Bar options={options} data={chartData} />
+      </div>
+    );
+  }
 }

@@ -80,5 +80,11 @@ export default function Mental() {
     }
   }, [mentalData]);
 
-  if (chartData) return <Pie options={options} data={chartData} />;
+  if (chartData) {
+    return (
+      <div className="mental-chart">
+        <Pie options={options} data={chartData} />
+      </div>
+    );
+  }
 }

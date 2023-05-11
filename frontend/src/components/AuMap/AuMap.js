@@ -74,10 +74,10 @@ function AuMap() {
 
   return (
     <div className="map-area">
-      <div className="sidebar">
+      <div className="au-sidebar">
         Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
       </div>
-      <div ref={mapContainer} className="map-container" />
+      <div ref={mapContainer} className="au-map-container" />
     </div>
   );
 }

@@ -109,5 +109,9 @@ export const data = {
 };
 
 export default function LineChart() {
-  return <Line className="line-chart" options={options} data={data} />;
+  return (
+    <div className="sudo-chart">
+      <Line className="line-chart" options={options} data={data} />
+    </div>
+  );
 }

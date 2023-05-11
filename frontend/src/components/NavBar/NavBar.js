@@ -6,7 +6,13 @@ function NavBar() {
     <header>
       <div className="team-name">COMP90024 CCC Team 3</div>
       <div className="display-options">
-        <Link className="option" to={"/"}>
+        <Link className="option" to={"/PageOne"}>
+          Page One
+        </Link>
+        <Link className="option" to={"/PageTwo"}>
+          Page Two
+        </Link>
+        {/* <Link className="option" to={"/VictoriaMap"}>
           VictoriaMap
         </Link>
         <Link className="option" to={"/AuMap"}>
@@ -23,7 +29,7 @@ function NavBar() {
         </Link>
         <Link className="option" to={"/NonMental"}>
           NonMental
-        </Link>
+        </Link> */}
       </div>
     </header>
   );

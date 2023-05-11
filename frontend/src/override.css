@@ -1,12 +1,54 @@
-.map-container {
+.vic-map-container {
   position: absolute;
-  top: 0;
+  top: 55vh;
   bottom: 0;
   width: 100%;
-  height: 100vh;
+  height: 45vh;
 }
+
+.au-map-container {
+  position: absolute;
+  top: 9vh;
+  bottom: 0;
+  width: 50vw;
+  height: 91vh;
+}
+
+/* .line-chart {
+  position: absolute;
+  top: 9vh;
+  bottom: 0;
+  width: 100%;
+  height: 45vh;
+} */
 
 body {
   margin: 0;
   padding: 0;
+}
+
+.sudo-chart {
+  padding-left: 28vw;
+  height: 45vh;
+  width: 100%;
+}
+
+.tw-chart {
+  padding-left: 60vw;
+  height: 30vh;
+  width: 50%;
+}
+
+.mental-chart {
+  top: 32vh;
+  padding-left: 68vw;
+  height: 30vh;
+  width: 50%;
+}
+
+.non-mental-chart {
+  top: 64vh;
+  padding-left: 68vw;
+  height: 30vh;
+  width: 50%;
 }
