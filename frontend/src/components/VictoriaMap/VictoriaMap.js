@@ -180,7 +180,7 @@ function VictoriaMap() {
       popupRef.current
         .setLngLat(coordinates)
         .setHTML(
-          `<h4>${prop.LGA_NAME22}</h4><h4>1: ${prop.estmd_nm_1}</h4><h4>2: ${prop.estmd_nm_2}</h4><h4>3: ${prop.estmd_nmbr}</h4>`
+          `<h4>Number of people <br/> with mental health problem <br/> in ${prop.LGA_NAME22}</h4><h4>Male: ${prop.estmd_nm_1}</h4><h4>Female: ${prop.estmd_nmbr}</h4><h4>Total: ${prop.estmd_nm_2}</h4>`
         )
         .addTo(map.current);
     }
