@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
+import PopupChart from "../TwitterBarChart/PopupChart";
 
 // mapboxgl.accessToken = process.env.REACT_APP_MAP_BOX_TOKEN;
 mapboxgl.accessToken =
@@ -13,6 +14,7 @@ function AuMap() {
   const [lat, setLat] = useState(-25.2744);
   const [zoom, setZoom] = useState(3);
   const [geoJSONData, setGeoJSONData] = useState(null);
+  const [gccName, setGccName] = useState(null);
 
   useEffect(() => {
     const fetchGeoJSON = async () => {
@@ -55,16 +57,19 @@ function AuMap() {
     else {
       if (!geoJSONData) return;
       map.current.on("load", () => {
-        // console.log(geoJSONData);
-
-        // Clear existing markers
-        // markers.forEach((marker) => marker.remove());
-
         // Add markers
         geoJSONData.data.features.map((feature) => {
+          // console.log(feature);
           const marker = new mapboxgl.Marker()
             .setLngLat(feature.geometry.coordinates)
             .addTo(map.current);
+
+          marker.getElement().addEventListener("click", () => {
+            console.log("Marker clicked:", feature.properties);
+
+            setGccName(feature.properties);
+            // console.log(gcc);
+          });
 
           return marker;
         });
@@ -72,12 +77,28 @@ function AuMap() {
     }
   }, [geoJSONData]);
 
+  // useEffect(() => {
+  //   console.log("gcc updated:", gccName);
+  // }, [gccName]);
+
   return (
-    <div className="map-area">
-      <div className="au-sidebar">
-        Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
+    <div>
+      <div className="map-area">
+        <div className="au-sidebar">
+          Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
+        </div>
+        <div ref={mapContainer} className="au-map-container" />
       </div>
-      <div ref={mapContainer} className="au-map-container" />
+
+      {gccName ? (
+        <div className="tw-chart">
+          <PopupChart gccName={gccName.name} />
+        </div>
+      ) : (
+        <div className="tw-text">
+          <p>Click markers to see relative charts</p>
+        </div>
+      )}
     </div>
   );
 }

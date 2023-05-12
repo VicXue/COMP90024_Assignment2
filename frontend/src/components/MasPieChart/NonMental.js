@@ -46,7 +46,7 @@ export default function NonMental() {
 
   useEffect(() => {
     if (mentalData) {
-      console.log(mentalData);
+      // console.log(mentalData);
       // console.log(mentalData.data.rows);
 
       const cur_row = mentalData.data.rows[0].value;

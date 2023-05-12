@@ -9,7 +9,7 @@ function PageOne() {
   return (
     <div>
       <AuMap />
-      <TwBarChart />
+      {/* <TwBarChart /> */}
       <Mental />
       <NonMental />
     </div>

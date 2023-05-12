@@ -38,7 +38,7 @@ const labels = [
   "Avg Positive Score",
 ];
 
-export default function TwBarChart() {
+export default function PopupChart(props) {
   const [twData, setTwData] = useState(null);
   const [chartData, setChartData] = useState(null);
 
@@ -61,15 +61,37 @@ export default function TwBarChart() {
 
   useEffect(() => {
     if (twData) {
-      // console.log(twData.data.rows);
+      //   console.log(twData.data.rows);
+      // console.log(props.gccName);
 
-      const cur_row = twData.data.rows[0].value;
+      let gccName = props.gccName;
+      let rowNum = -1;
+
+      if (gccName === "Greater Sydney") {
+        rowNum = 0;
+      } else if (gccName === "Greater Melbourne") {
+        rowNum = 1;
+      } else if (gccName === "Greater Brisbane") {
+        rowNum = 2;
+      } else if (gccName === "Greater Adelaide") {
+        rowNum = 3;
+      } else if (gccName === "Greater Perth") {
+        rowNum = 4;
+      } else if (gccName === "Greater Hobart") {
+        rowNum = 5;
+      } else if (gccName === "Greater Darwin") {
+        rowNum = 6;
+      } else if (gccName === "Australian Capital Territory") {
+        rowNum = 7;
+      }
+
+      const cur_row = twData.data.rows[rowNum].value;
 
       const tempData = {
         labels,
         datasets: [
           {
-            label: "1gsyd",
+            label: gccName,
             data: [
               cur_row.negative_score_avg,
               cur_row.neutral_score_avg,
@@ -77,8 +99,6 @@ export default function TwBarChart() {
             ],
             backgroundColor: [
               "rgba(255, 99, 132, 0.2)",
-              "rgba(54, 162, 235, 0.2)",
-              "rgba(255, 206, 86, 0.2)",
             ],
           },
         ],
@@ -86,12 +106,13 @@ export default function TwBarChart() {
 
       setChartData(tempData);
     }
-  }, [twData]);
+  }, [twData, props]);
 
   if (chartData) {
     return (
       <div className="tw-chart">
         <Bar options={options} data={chartData} />
+        {/* <p>{props.gccName.name}</p> */}
       </div>
     );
   }

@@ -8,10 +8,10 @@
 
 .au-map-container {
   position: absolute;
-  top: 9vh;
+  top: 9.5vh;
   bottom: 0;
   width: 50vw;
-  height: 91vh;
+  height: 90vh;
 }
 
 /* .line-chart {
@@ -34,21 +34,35 @@ body {
 }
 
 .tw-chart {
-  padding-left: 60vw;
+  padding-left: 31vw;
   height: 30vh;
   width: 50%;
+  z-index: 9999;
+}
+
+.tw-text {
+  padding-left: 60vw;
+  height: 28vh;
+  /* width: 50%; */
+  /* z-index: 9999; */
+}
+
+.popup-chart {
+  padding-left: 60vw;
+  height: 29vh;
+  /* width: 50%; */
 }
 
 .mental-chart {
   top: 32vh;
   padding-left: 68vw;
   height: 30vh;
-  width: 50%;
+  /* width: 50%; */
 }
 
 .non-mental-chart {
   top: 64vh;
   padding-left: 68vw;
   height: 30vh;
-  width: 50%;
+  /* width: 50%; */
 }

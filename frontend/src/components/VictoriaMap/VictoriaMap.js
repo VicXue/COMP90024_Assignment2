@@ -15,7 +15,7 @@ function VictoriaMap() {
 
   const [lng, setLng] = useState(144.9631);
   const [lat, setLat] = useState(-36.8136);
-  const [zoom, setZoom] = useState(6);
+  const [zoom, setZoom] = useState(5);
   const [geoJSONData, setGeoJSONData] = useState(null);
 
   // useEffect(() => {
