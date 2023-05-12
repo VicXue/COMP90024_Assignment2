@@ -1,12 +1,17 @@
 basePath: /api/v1
 info:
-  contact: {}
+  contact:
+    email: quanchic@student.unimelb.edu.au
+    name: Quanchi Chen
+  description: A web service API in Go using the Gin framework
+  title: Team 3 Gin Web Service
+  version: "1.0"
 paths:
-  /example/fetchdocs:
+  /geography/gcc:
     get:
       consumes:
       - application/json
-      description: return docs in the order db
+      description: return gcc_pt in the geography_db database
       produces:
       - application/json
       responses:
@@ -14,7 +19,116 @@ paths:
           description: OK
           schema:
             type: string
-      summary: preturn docs in the order db
+      summary: return gcc_pt
       tags:
-      - example
+      - geography
+  /geography/lga:
+    get:
+      consumes:
+      - application/json
+      description: return lga_copy in the geography_db database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: return lga_copy
+      tags:
+      - geography
+  /mastodon/mental/count:
+    get:
+      consumes:
+      - application/json
+      description: return the mastodon_mental_count MapReduce view in the mental_disabled_db
+        database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: return mastodon_mental_count
+      tags:
+      - mastodon
+  /mastodon/mental/output:
+    get:
+      consumes:
+      - application/json
+      description: return the mastodon_mental_output MapReduce view in the mental_disabled_db
+        database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: return mastodon_mental_output
+      tags:
+      - mastodon
+  /mastodon/non-mental/count:
+    get:
+      consumes:
+      - application/json
+      description: return the mastodon_non_mental_count MapReduce view in the non_mental_disabled_db
+        database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: return mastodon_non_mental_count
+      tags:
+      - mastodon
+  /mastodon/non-mental/output:
+    get:
+      consumes:
+      - application/json
+      description: return the mastodon_non_mental_output MapReduce view in the non_mental_disabled_db
+        database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: return mastodon_non_mental_output
+      tags:
+      - mastodon
+  /twitter/count:
+    get:
+      consumes:
+      - application/json
+      description: return the tw_count MapReduce view in the tweets database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: return tw_count
+      tags:
+      - twitter
+  /twitter/sentiment:
+    get:
+      consumes:
+      - application/json
+      description: return the tw_sentiment MapReduce view in the tweets database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: return tw_sentiment
+      tags:
+      - twitter
 swagger: "2.0"

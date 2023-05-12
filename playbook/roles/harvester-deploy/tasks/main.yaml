@@ -1,3 +1,21 @@
+- name: Set variables for master
+  set_fact:
+    mastodon_server: "{{ mastodon_server_0 }}"
+    mastodon_token: "{{ mastodon_token_0 }}"
+  when: inventory_hostname == groups['master'][0]
+
+- name: Set variables for worker 1
+  set_fact:
+    mastodon_server: "{{ mastodon_server_1 }}"
+    mastodon_token: "{{ mastodon_token_1 }}"
+  when: inventory_hostname == groups['workers'][0]
+
+- name: Set variables for worker 2
+  set_fact:
+    mastodon_server: "{{ mastodon_server_2 }}"
+    mastodon_token: "{{ mastodon_token_2 }}"
+  when: inventory_hostname == groups['workers'][1]
+
 - name: Remove existing stack 
   become: yes
   community.docker.docker_stack:
@@ -37,6 +55,9 @@
     dest: "{{ harvester_dir }}/Dockerfile.prod"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
+  vars:
+    mastodon_server: "{{ env_vars[inventory_hostname]['mastodon_server'] }}"
+    mastodon_token: "{{ env_vars[inventory_hostname]['mastodon_token'] }}"
 
 - name: Build image
   become: yes

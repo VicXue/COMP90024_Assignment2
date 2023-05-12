@@ -1,10 +1,11 @@
 FROM python:3.9 
 COPY . ./
 
-ENV CLOUDANT_AUTH_TYPE=COUCHDB_SESSION
-ENV CLOUDANT_URL=http://{{couchdb_service_name}}:5984
-ENV CLOUDANT_USERNAME={{couchdb_user}}
-ENV CLOUDANT_PASSWORD={{couchdb_pass}}
+ENV MASTODON_SERVER={{mastodon_server}}
+ENV MASTODON_TOKEN={{mastodon_token}}
+ENV DB_URL={{couchdb_service_name}}
+ENV DB_USER={{couchdb_user}}
+ENV DB_PASSWORD={{couchdb_pass}}
 
-RUN pip install -r "requirement.txt"
+RUN pip install -r "requirements.txt"
 CMD ["python", "./main.py"] 

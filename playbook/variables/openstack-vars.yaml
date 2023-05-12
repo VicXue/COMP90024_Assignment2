@@ -1,6 +1,6 @@
 # Common vars
 availability_zone: melbourne-qh2-uom
-instance_flavor: uom.mse.1c4g
+instance_flavor: uom.mse.2c9g
 instance_image: bbaf16f8-2484-48d7-b455-42209cc4b8d2
 instance_key_name: gp3_key
 instance_network: qh2-uom-internal
@@ -8,17 +8,17 @@ instance_network: qh2-uom-internal
 # Volume
 volumes:
   - vol_name: vol-data-1
-    vol_size: 130
+    vol_size: 60
   - vol_name: vol-data-2
-    vol_size: 130
+    vol_size: 60
   - vol_name: vol-data-3
-    vol_size: 130
+    vol_size: 60
   - vol_name: vol-docker-1
-    vol_size: 40
+    vol_size: 20
   - vol_name: vol-docker-2
-    vol_size: 10
+    vol_size: 20
   - vol_name: vol-docker-3
-    vol_size: 10
+    vol_size: 20
 
 cidr_security_groups:
   - name: ssh
