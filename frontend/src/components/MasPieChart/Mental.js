@@ -33,8 +33,12 @@ export default function Mental() {
         const response = await fetch(
           `${process.env.REACT_APP_BACKEND_API_HOST}:8080/api/v1/mastodon/mental/output`
         );
-        const jsonData = await response.json();
-        setmentalData(jsonData);
+        try{
+          const jsonData = await response.json();
+          setmentalData(jsonData);
+        }catch(error){
+          console.error("Error Transforming data:", error);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
