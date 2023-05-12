@@ -1,13 +1,10 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
 
-import geoJSON from "../../data/lga_copy.geojson";
-
-// mapboxgl.accessToken = process.env.REACT_APP_MAP_BOX_TOKEN;
-mapboxgl.accessToken =
-  "pk.eyJ1Ijoiam9obm55bXUiLCJhIjoiY2xoMGtuNjZhMDdwNjNybndqcmRmc3Y4NCJ9.G5G_PRIPl1394Dg1QBjhpA";
+mapboxgl.accessToken = process.env.REACT_APP_MAP_BOX_API_KEY;
 
 function VictoriaMap() {
+  const API_URL = process.env.REACT_APP_BACKEND_API_HOST;
   const mapContainer = useRef(null);
   const map = useRef(null);
   const hoveredStateId = useRef(null);
@@ -16,45 +13,30 @@ function VictoriaMap() {
   const [lng, setLng] = useState(144.9631);
   const [lat, setLat] = useState(-36.8136);
   const [zoom, setZoom] = useState(5);
-  const [geoJSONData, setGeoJSONData] = useState(null);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch(geoJSON);
-  //       const jsonData = await response.json();
-  //       console.log(jsonData);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
-  // useEffect(() => {
-  //   const fetchGeoJSON = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         // `${process.env.REACT_APP_BACKEND_API_HOST}:8080/api/v1/geography/lga`
-  //         `http://172.26.134.155:8080/api/v1/geography/lga`
-  //       );
-  //       const data = await response.json();
-
-  //       delete data.data["_id"];
-  //       delete data.data["_rev"];
-  //       // console.log(data.data);
-
-  //       setGeoJSONData(data.data);
-  //     } catch (error) {
-  //       console.error("Error fetching GeoJSON data:", error);
-  //     }
-  //   };
-
-  //   fetchGeoJSON();
-  // }, []);
+  let geoJSONData;
 
   useEffect(() => {
+    const fetchGeoJSON = async () => {
+      try {
+        const response = await fetch(
+          API_URL+":8080/api/v1/geography/lga"
+        );
+        const data = await response.json();
+
+        delete data.data["_id"];
+        delete data.data["_rev"];
+
+        geoJSONData = data.data;
+        fillMap();
+      } catch (error) {
+        console.error("Error fetching GeoJSON data:", error);
+      }
+    };
+
+    fetchGeoJSON();
+  }, []);
+
+  const initialiseMap = () => {
     if (map.current) return; // initialize map only once
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
@@ -62,68 +44,66 @@ function VictoriaMap() {
       center: [lng, lat],
       zoom: zoom,
     });
-  });
+  }
+  useEffect(initialiseMap);
 
-  useEffect(() => {
+  const fillMap = () => {
     if (!map.current) return;
     else {
-      if (!geoJSON) return;
-
-      // console.log(geoJSONData);
-      map.current.on("load", () => {
-        //Source
-        if (map.current.getSource(`pol`) == null) {
-          map.current.addSource(`pol`, {
-            type: "geojson",
-            data: geoJSON,
-          });
-        }
-
-        // Fill
-        if (map.current.getLayer(`pol-fill`) == null) {
-          map.current.addLayer({
-            id: `pol-fill`,
-            type: "fill",
-            source: `pol`, // reference the data source
-            layout: {},
-            paint: {
-              "fill-color": "#FF3C00",
-              // "fill-opacity": 0.35,
-              "fill-opacity": [
-                "case",
-                ["boolean", ["feature-state", "hover"], false],
-                0.7,
-                0.35,
-              ],
-            },
-          });
-        }
-
-        // Outline
-        if (map.current.getLayer("pol-outline") == null) {
-          map.current.addLayer({
-            id: "pol-outline",
-            type: "line",
-            source: `pol`,
-            layout: {},
-            paint: {
-              "line-color": "#000000",
-              "line-width": 0.8,
-            },
-          });
-        }
-
-        // Set initial feature state
-        map.current.setFeatureState(
-          { source: "pol", id: hoveredStateId.current },
-          { hover: false }
-        );
-
-        // Pop-Up
-        popupRef.current = new mapboxgl.Popup({
-          closeButton: false,
-          closeOnClick: false,
+      if (!geoJSONData) return;
+      
+      //Source
+      if (map.current.getSource(`pol`) == null) {
+        map.current.addSource(`pol`, {
+          type: "geojson",
+          data: geoJSONData,
         });
+      }
+
+      // Fill
+      if (map.current.getLayer(`pol-fill`) == null) {
+        map.current.addLayer({
+          id: `pol-fill`,
+          type: "fill",
+          source: `pol`, // reference the data source
+          layout: {},
+          paint: {
+            "fill-color": "#FF3C00",
+            // "fill-opacity": 0.35,
+            "fill-opacity": [
+              "case",
+              ["boolean", ["feature-state", "hover"], false],
+              0.7,
+              0.35,
+            ],
+          },
+        });
+      }
+
+      // Outline
+      if (map.current.getLayer("pol-outline") == null) {
+        map.current.addLayer({
+          id: "pol-outline",
+          type: "line",
+          source: `pol`,
+          layout: {},
+          paint: {
+            "line-color": "#000000",
+            "line-width": 0.8,
+          },
+        });
+      }
+
+      // Set initial feature state
+      map.current.setFeatureState(
+        { source: "pol", id: hoveredStateId.current },
+        { hover: false }
+      );
+
+      // Pop-Up
+      popupRef.current = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false,
       });
     }
 
@@ -134,7 +114,8 @@ function VictoriaMap() {
       map.current.off("mousemove", `pol-fill`, handleMouseMove);
       map.current.off("mouseleave", `pol-fill`, handleMouseLeave);
     };
-  }, []);
+  }
+  // useEffect(fillMap, []);
 
   useEffect(() => {
     if (!map.current) return; // wait for map to initialize
