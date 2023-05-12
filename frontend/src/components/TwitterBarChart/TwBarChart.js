@@ -46,8 +46,7 @@ export default function TwBarChart() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          // `${process.env.REACT_APP_BACKEND_API_HOST}:8080/api/v1/twitter/sentiment`
-          "http://172.26.134.155:8080/api/v1/twitter/sentiment"
+          `${process.env.REACT_APP_BACKEND_API_HOST}:8080/api/v1/twitter/sentiment`
         );
         const jsonData = await response.json();
         setTwData(jsonData);

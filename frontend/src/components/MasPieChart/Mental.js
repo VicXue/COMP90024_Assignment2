@@ -31,8 +31,7 @@ export default function Mental() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          // `${process.env.REACT_APP_BACKEND_API_HOST}:8080/api/v1/mastodon/mental/ouput`
-          "http://172.26.134.155:8080/api/v1/mastodon/mental/output"
+          `${process.env.REACT_APP_BACKEND_API_HOST}:8080/api/v1/mastodon/mental/output`
         );
         const jsonData = await response.json();
         setmentalData(jsonData);

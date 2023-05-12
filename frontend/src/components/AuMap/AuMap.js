@@ -2,10 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
 import PopupChart from "../TwitterBarChart/PopupChart";
 
-// mapboxgl.accessToken = process.env.REACT_APP_MAP_BOX_TOKEN;
-mapboxgl.accessToken =
-  "pk.eyJ1Ijoiam9obm55bXUiLCJhIjoiY2xoMGtuNjZhMDdwNjNybndqcmRmc3Y4NCJ9.G5G_PRIPl1394Dg1QBjhpA";
-
+mapboxgl.accessToken = process.env.REACT_APP_MAP_BOX_API_KEY;
 function AuMap() {
   const mapContainer = useRef(null);
   const map = useRef(null);
