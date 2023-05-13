@@ -10,6 +10,7 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
 ChartJS.register(
   CategoryScale,
@@ -18,7 +19,8 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  ChartDataLabels
 );
 
 export const options = {
@@ -31,6 +33,19 @@ export const options = {
       display: true,
       font: { size: 28 },
       text: "Recurrent expenditure hisotry in mental health in VIC",
+    },
+    datalabels: {
+      anchor: "end",
+      align: "end",
+      offset: 0,
+      formatter: (value, ctx) => {
+        return (value / 1000).toFixed(0) + "K";
+        // if (value > 0.04) {
+        //   return (value * 100 + "%").toString();
+        // } else {
+        //   return "";
+        // }
+      },
     },
   },
 };
@@ -59,6 +74,7 @@ export const data = {
       ],
       borderColor: "rgb(255, 99, 132)",
       backgroundColor: "rgba(255, 99, 132, 0.5)",
+      hidden: true,
     },
     {
       label: "Specialised psychiatric units or wards in public acute hospitals",
@@ -68,6 +84,7 @@ export const data = {
       ],
       borderColor: "rgb(53, 162, 235)",
       backgroundColor: "rgba(53, 162, 235, 0.5)",
+      hidden: true,
     },
     {
       label: "Community mental health care services",
@@ -77,6 +94,7 @@ export const data = {
       ],
       borderColor: "rgb(228, 25, 167)",
       backgroundColor: "rgba(228, 25, 167, 0.5)",
+      hidden: true,
     },
     {
       label: "Residential mental health services",
@@ -86,6 +104,7 @@ export const data = {
       ],
       borderColor: "rgb(212, 219, 19)",
       backgroundColor: "rgba(212, 219, 19, 0.5)",
+      hidden: true,
     },
     {
       label: "Grants to non-government organisations",
@@ -95,6 +114,7 @@ export const data = {
       ],
       borderColor: "rgb(72, 11, 216)",
       backgroundColor: "rgba(72, 11, 216, 0.5)",
+      hidden: true,
     },
     {
       label: "Other indirect expenditure",
@@ -104,6 +124,7 @@ export const data = {
       ],
       borderColor: "rgb(8, 196, 102)",
       backgroundColor: "rgba(8, 196, 102, 0.5)",
+      hidden: true,
     },
   ],
 };

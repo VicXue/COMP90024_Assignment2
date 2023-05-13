@@ -11,7 +11,7 @@
   top: 9.5vh;
   bottom: 0;
   width: 50vw;
-  height: 90vh;
+  height: 90.75vh;
 }
 
 /* .line-chart {
@@ -29,7 +29,7 @@ body {
 
 .sudo-chart {
   padding-left: 28vw;
-  height: 45vh;
+  height: 47vh;
   width: 100%;
 }
 
@@ -41,8 +41,12 @@ body {
 }
 
 .tw-text {
-  padding-left: 60vw;
+  /* position: right; */
+  /* border-left: 800px; */
+  padding-left: 65vw;
   height: 28vh;
+  width: 400px;
+  border: 1px solid black;
   /* width: 50%; */
   /* z-index: 9999; */
 }

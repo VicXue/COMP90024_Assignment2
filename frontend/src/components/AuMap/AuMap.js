@@ -62,7 +62,7 @@ function AuMap() {
             .addTo(map.current);
 
           marker.getElement().addEventListener("click", () => {
-            console.log("Marker clicked:", feature.properties);
+            // console.log("Marker clicked:", feature.properties);
 
             setGccName(feature.properties);
             // console.log(gcc);

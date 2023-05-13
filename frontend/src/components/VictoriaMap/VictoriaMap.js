@@ -18,9 +18,7 @@ function VictoriaMap() {
   useEffect(() => {
     const fetchGeoJSON = async () => {
       try {
-        const response = await fetch(
-          API_URL+":8080/api/v1/geography/lga"
-        );
+        const response = await fetch(API_URL + ":8080/api/v1/geography/lga");
         const data = await response.json();
 
         delete data.data["_id"];
@@ -44,14 +42,14 @@ function VictoriaMap() {
       center: [lng, lat],
       zoom: zoom,
     });
-  }
+  };
   useEffect(initialiseMap);
 
   const fillMap = () => {
     if (!map.current) return;
     else {
       if (!geoJSONData) return;
-      
+
       //Source
       if (map.current.getSource(`pol`) == null) {
         map.current.addSource(`pol`, {
@@ -114,7 +112,7 @@ function VictoriaMap() {
       map.current.off("mousemove", `pol-fill`, handleMouseMove);
       map.current.off("mouseleave", `pol-fill`, handleMouseLeave);
     };
-  }
+  };
   // useEffect(fillMap, []);
 
   useEffect(() => {
@@ -161,7 +159,12 @@ function VictoriaMap() {
       popupRef.current
         .setLngLat(coordinates)
         .setHTML(
-          `<h4>Number of people <br/> with mental health problem <br/> in ${prop.LGA_NAME22}</h4><h4>Male: ${prop.estmd_nm_1}</h4><h4>Female: ${prop.estmd_nmbr}</h4><h4>Total: ${prop.estmd_nm_2}</h4>`
+          `<h4>Esitmated percentage of people <br/> with mental health problem <br/> in ${
+            prop.LGA_NAME22
+          }</h4>
+          <h4>Male: ${prop.estmd_nm_1.toFixed(2)}</h4>
+          <h4>Female: ${prop.estmd_nmbr.toFixed(2)}</h4>
+          <h4>Total: ${prop.estmd_nm_2.toFixed(2)}</h4>`
         )
         .addTo(map.current);
     }

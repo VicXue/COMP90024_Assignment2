@@ -1,27 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
 import { Pie } from "react-chartjs-2";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
-ChartJS.register(ArcElement, Tooltip, Legend, Title);
-
-export const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: "top",
-    },
-    title: {
-      display: true,
-      text: "Twitter Dataset Pie Chart",
-    },
-  },
-};
-
-const labels = [
-  "Avg Negative Score",
-  "Avg Neutral Score",
-  "Avg Positive Score",
-];
+ChartJS.register(ArcElement, Tooltip, Legend, Title, ChartDataLabels);
 
 export default function PopupChart(props) {
   const [twData, setTwData] = useState(null);
@@ -44,6 +26,12 @@ export default function PopupChart(props) {
   }, []);
 
   useEffect(() => {
+    const labels = [
+      "Avg Negative Score",
+      "Avg Neutral Score",
+      "Avg Positive Score",
+    ];
+
     if (twData) {
       //   console.log(twData.data.rows);
       // console.log(props.gccName);
@@ -77,9 +65,9 @@ export default function PopupChart(props) {
           {
             label: gccName,
             data: [
-              cur_row.negative_score_avg,
-              cur_row.neutral_score_avg,
-              cur_row.positive_score_avg,
+              cur_row.negative_score_avg.toFixed(2),
+              cur_row.neutral_score_avg.toFixed(2),
+              cur_row.positive_score_avg.toFixed(2),
             ],
             backgroundColor: [
               "rgba(255, 99, 132, 0.2)",
@@ -101,10 +89,34 @@ export default function PopupChart(props) {
   }, [twData, props]);
 
   if (chartData) {
+    const options = {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: "top",
+        },
+        title: {
+          display: true,
+          text: props.gccName + " - Twitter Dataset Pie Chart",
+        },
+        datalabels: {
+          anchor: "end",
+          align: "start",
+          offset: 0,
+          formatter: (value, ctx) => {
+            if (value > 0.11) {
+              return (value*100).toString().substring(0, 2) + "%";
+            } else {
+              return "";
+            }
+          },
+        },
+      },
+    };
+
     return (
       <div className="tw-chart">
         <Pie options={options} data={chartData} />
-        {/* <p>{props.gccName.name}</p> */}
       </div>
     );
   }

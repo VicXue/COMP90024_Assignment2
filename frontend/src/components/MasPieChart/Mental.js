@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
 import { Pie } from "react-chartjs-2";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 
-ChartJS.register(ArcElement, Tooltip, Legend, Title);
+ChartJS.register(ArcElement, Tooltip, Legend, Title, ChartDataLabels);
 
 export const options = {
   responsive: true,
@@ -13,6 +14,18 @@ export const options = {
     title: {
       display: true,
       text: "Mastodon Mental Dataset Pie Chart",
+    },
+    datalabels: {
+      anchor: "end",
+      align: "start",
+      offset: 3,
+      formatter: (value, ctx) => {
+        if (value > 0.04) {
+          return (value*100 + "%").toString();
+        } else {
+          return "";
+        }
+      },
     },
   },
 };
@@ -33,10 +46,10 @@ export default function Mental() {
         const response = await fetch(
           `${process.env.REACT_APP_BACKEND_API_HOST}:8080/api/v1/mastodon/mental/output`
         );
-        try{
+        try {
           const jsonData = await response.json();
           setmentalData(jsonData);
-        }catch(error){
+        } catch (error) {
           console.error("Error Transforming data:", error);
         }
       } catch (error) {
@@ -60,9 +73,9 @@ export default function Mental() {
           {
             label: "Mental Dataset",
             data: [
-              cur_row.negative_count_avg,
-              cur_row.neutral_count_avg,
-              cur_row.positive_count_avg,
+              cur_row.negative_count_avg.toFixed(2),
+              cur_row.neutral_count_avg.toFixed(2),
+              cur_row.positive_count_avg.toFixed(2),
             ],
             backgroundColor: [
               "rgba(255, 99, 132, 0.2)",
