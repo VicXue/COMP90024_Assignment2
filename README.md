@@ -23,7 +23,7 @@ p.s. Due to the intrinsics of docker swarm, the CouchDB cluster may not finish i
 - CouchDB
     - [x] Docker Swarm Deployment
     - [x] Photon
-    - [ ] Secret Hiding via Ansible Vault.
+    - [x] Secret Hiding via Ansible Vault.
     
           DB Admin credentials are open in the repo, may need to update it to use ansible vault, but it's low priority for now.
 - Harvester
