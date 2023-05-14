@@ -17,8 +17,7 @@ function AuMap() {
     const fetchGeoJSON = async () => {
       try {
         const response = await fetch(
-          // `${process.env.REACT_APP_BACKEND_API_HOST}:8080/api/v1/geography/gcc`
-          `http://172.26.134.155:8080/api/v1/geography/gcc`
+          `${process.env.REACT_APP_BACKEND_API_HOST}:8080/api/v1/geography/gcc`
         );
         const data = await response.json();
         setGeoJSONData(data);
