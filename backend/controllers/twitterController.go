@@ -20,7 +20,7 @@ var dbHost = os.Getenv("DB_HOST")
 // @Tags twitter
 // @Accept json
 // @Produce json
-// @Success 200 {string} getTwitterSentiment
+// @Success 200 {string} GetTwitterSentiment
 // @Router /twitter/sentiment [get]
 func GetTwitterSentiment(c *gin.Context) {
 	url := fmt.Sprintf(
@@ -39,7 +39,7 @@ func GetTwitterSentiment(c *gin.Context) {
 // @Tags twitter
 // @Accept json
 // @Produce json
-// @Success 200 {string} getTwitterCount
+// @Success 200 {string} GetTwitterCount
 // @Router /twitter/count [get]
 func GetTwitterCount(c *gin.Context) {
 	url := fmt.Sprintf(
