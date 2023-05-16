@@ -20,11 +20,7 @@ export const options = {
       align: "start",
       offset: 3,
       formatter: (value, ctx) => {
-        if (value > 0.04) {
-          return (value*100 + "%").toString();
-        } else {
-          return "";
-        }
+        return (value * 100 + "%").toString();
       },
     },
   },

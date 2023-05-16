@@ -119,10 +119,7 @@ function LineChart() {
   }, [vicData]);
 
   return (
-    // <div className="sudo-chart">
-    //   <Line className="line-chart" options={options} data={chartData} />
-    // </div>
-    <div className="sudo-chart">
+    <div className="sudo-area">
       {chartData ? (
         <Line className="line-chart" options={options} data={chartData} />
       ) : null}

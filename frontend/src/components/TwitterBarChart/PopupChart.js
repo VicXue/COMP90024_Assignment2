@@ -102,20 +102,16 @@ export default function PopupChart(props) {
         datalabels: {
           anchor: "end",
           align: "start",
-          offset: 0,
+          offset: 1.5,
           formatter: (value, ctx) => {
-            if (value > 0.11) {
-              return (value*100).toString().substring(0, 2) + "%";
-            } else {
-              return "";
-            }
+            return (value * 100).toString().substring(0, 2) + "%";
           },
         },
       },
     };
 
     return (
-      <div className="tw-chart">
+      <div className="popup-chart">
         <Pie options={options} data={chartData} />
       </div>
     );

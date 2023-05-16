@@ -126,14 +126,6 @@ function VictoriaMap() {
 
   const handleMouseMove = (e) => {
     if (e.features.length > 0) {
-      // console.log(e.features[0]);
-      // console.log(hoveredFeature);
-      // console.log(hoveredStateId.current);
-
-      // hoveredStateId.current = e.features[0].properties["LGA_CODE22"];
-
-      // console.log(hoveredStateId.current);
-
       if (hoveredStateId.current !== null) {
         map.current.setFeatureState(
           { source: `pol`, id: hoveredStateId.current },
@@ -152,7 +144,6 @@ function VictoriaMap() {
       }
 
       const prop = e.features[0].properties;
-      // console.log(prop);
       const coordinates = e.lngLat;
 
       // Update the popup content
@@ -184,7 +175,7 @@ function VictoriaMap() {
   };
 
   return (
-    <div className="map-area">
+    <div className="vic-map-area">
       <div className="vic-sidebar">
         Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
       </div>

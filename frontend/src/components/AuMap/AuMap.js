@@ -9,7 +9,7 @@ function AuMap() {
 
   const [lng, setLng] = useState(133.7751);
   const [lat, setLat] = useState(-25.2744);
-  const [zoom, setZoom] = useState(3);
+  const [zoom, setZoom] = useState(2);
   const [geoJSONData, setGeoJSONData] = useState(null);
   const [gccName, setGccName] = useState(null);
 
@@ -61,10 +61,7 @@ function AuMap() {
             .addTo(map.current);
 
           marker.getElement().addEventListener("click", () => {
-            // console.log("Marker clicked:", feature.properties);
-
             setGccName(feature.properties);
-            // console.log(gcc);
           });
 
           return marker;
@@ -73,13 +70,9 @@ function AuMap() {
     }
   }, [geoJSONData]);
 
-  // useEffect(() => {
-  //   console.log("gcc updated:", gccName);
-  // }, [gccName]);
-
   return (
     <div>
-      <div className="map-area">
+      <div className="au-map-area">
         <div className="au-sidebar">
           Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
         </div>
@@ -87,11 +80,11 @@ function AuMap() {
       </div>
 
       {gccName ? (
-        <div className="tw-chart">
+        <div className="tw-chart-area">
           <PopupChart gccName={gccName.name} />
         </div>
       ) : (
-        <div className="tw-text">
+        <div className="tw-text-area">
           <p>Click markers to see relative charts</p>
         </div>
       )}

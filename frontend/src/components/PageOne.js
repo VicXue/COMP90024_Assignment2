@@ -3,15 +3,17 @@ import React from "react";
 import AuMap from "./AuMap/AuMap";
 import Mental from "./MasPieChart/Mental";
 import NonMental from "./MasPieChart/NonMental";
-import TwBarChart from "./TwitterBarChart/TwBarChart";
 
 function PageOne() {
   return (
-    <div>
-      <AuMap />
-      {/* <TwBarChart /> */}
-      <Mental />
-      <NonMental />
+    <div className="page-one-container">
+      <div className="page-one-left">
+        <AuMap />
+      </div>
+      <div className="page-one-right">
+        <Mental />
+        <NonMental />
+      </div>
     </div>
   );
 }
