@@ -13,7 +13,7 @@ export const options = {
     },
     title: {
       display: true,
-      text: "Mastodon Mental Dataset Pie Chart",
+      text: "Average sentiment scores of Mastodon Mental Dataset",
     },
     datalabels: {
       anchor: "end",

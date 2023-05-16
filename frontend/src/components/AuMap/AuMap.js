@@ -85,7 +85,13 @@ function AuMap() {
         </div>
       ) : (
         <div className="tw-text-area">
-          <p>Click markers to see relative charts</p>
+          <p className="tw-text-para">
+            The map above displays the location distribution of GCCs, which are
+            represented by blue markers. Click on any marker to see the average
+            sentiment score of tweets posted in that region. <br />
+            <br />
+            Source: ?????????????????
+          </p>
         </div>
       )}
     </div>

@@ -6,6 +6,9 @@ function NavBar() {
     <header>
       <div className="team-name">COMP90024 CCC Team 3</div>
       <div className="display-options">
+        <Link className="option" to={"/"}>
+          Page Zero
+        </Link>
         <Link className="option" to={"/PageOne"}>
           Page One
         </Link>

@@ -121,7 +121,10 @@ function LineChart() {
   return (
     <div className="sudo-area">
       {chartData ? (
-        <Line className="line-chart" options={options} data={chartData} />
+        <div>
+          <Line className="line-chart" options={options} data={chartData} />
+          <p className="sudo-para"> Source: ?????????????????????</p>
+        </div>
       ) : null}
     </div>
   );

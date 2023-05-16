@@ -33,6 +33,13 @@
   width: 100%;
 }
 
+.tw-text-para {
+  text-align: justify;
+  width: 75%;
+  padding-left: 7.5vw;
+  padding-top: 15vh;
+}
+
 .popup-chart {
   padding-left: 12.5vw;
   height: 45vh;
@@ -67,6 +74,18 @@
   border-right: 2px solid black;
 }
 
+.vic-h3 {
+  padding-top: 5%;
+  padding-left: 15%;
+}
+
+.vic-map-container {
+  left: 17.5%;
+  top: 2.5%;
+  width: 65%;
+  height: 65vh;
+}
+
 .sudo-area {
   display: flex;
   flex-direction: column;
@@ -75,9 +94,6 @@
   padding-left: 2.5vw;
 }
 
-.vic-map-container {
-  left: 17.5%;
-  top: 15%;
-  width: 65%;
-  height: 65vh;
+.sudo-para {
+  padding-top: 15%;
 }

@@ -176,6 +176,10 @@ function VictoriaMap() {
 
   return (
     <div className="vic-map-area">
+      <h3 className="vic-h3">
+        Esitmated percentage of people with mental health problems <br /> in
+        different LGA sections in Victoria
+      </h3>
       <div className="vic-sidebar">
         Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
       </div>
