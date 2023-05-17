@@ -7,6 +7,22 @@ info:
   title: Team 3 Gin Web Service
   version: "1.0"
 paths:
+  /analysis/victoria-expenses:
+    get:
+      consumes:
+      - application/json
+      description: return the Victoria Government's expenses toward mental health
+        services
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: return the Victoria Government's expenses toward mental health services
+      tags:
+      - analysis
   /geography/gcc:
     get:
       consumes:

@@ -41,6 +41,10 @@ func main() {
 			geography.GET("/gcc", controllers.GetGeographyGCCData)
 			geography.GET("/lga", controllers.GetGeographyLGAData)
 		}
+		analysis := v1.Group("/analysis")
+		{
+			analysis.GET("/victoria-expenses", controllers.GetVictoriaExpenses)
+		}
 	}
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
