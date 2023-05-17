@@ -4,16 +4,16 @@ import { Link } from "react-router-dom";
 function NavBar() {
   return (
     <header>
-      <div className="team-name">COMP90024 CCC Team 3</div>
+      <h3 className="team-name">COMP90024 CCC Team 3</h3>
       <div className="display-options">
         <Link className="option" to={"/"}>
-          Page Zero
+          Overview
         </Link>
         <Link className="option" to={"/PageOne"}>
-          Page One
+          Social Media Data Analysis
         </Link>
         <Link className="option" to={"/PageTwo"}>
-          Page Two
+          Official Data Analysis
         </Link>
         {/* <Link className="option" to={"/VictoriaMap"}>
           VictoriaMap

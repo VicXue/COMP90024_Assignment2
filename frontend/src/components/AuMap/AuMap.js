@@ -74,7 +74,7 @@ function AuMap() {
     <div>
       <div className="au-map-area">
         <div className="au-sidebar">
-          Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
+          GCC Map
         </div>
         <div ref={mapContainer} className="au-map-container" />
       </div>
@@ -88,9 +88,7 @@ function AuMap() {
           <p className="tw-text-para">
             The map above displays the location distribution of GCCs, which are
             represented by blue markers. Click on any marker to see the average
-            sentiment score of tweets posted in that region. <br />
-            <br />
-            Source: ?????????????????
+            sentiment score of tweets posted in that region.
           </p>
         </div>
       )}

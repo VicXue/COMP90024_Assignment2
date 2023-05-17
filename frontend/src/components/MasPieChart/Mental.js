@@ -10,15 +10,22 @@ export const options = {
   plugins: {
     legend: {
       position: "top",
+      labels: {
+        font: { size: 10 },
+        color: "#deebf8",
+      },
     },
     title: {
       display: true,
-      text: "Average sentiment scores of Mastodon Mental Dataset",
+      font: { size: 16 },
+      color: "#61dafb",
+      text: "Mastodon Mental Dataset",
     },
     datalabels: {
       anchor: "end",
       align: "start",
       offset: 3,
+      color: "#deebf8",
       formatter: (value, ctx) => {
         return (value * 100 + "%").toString();
       },

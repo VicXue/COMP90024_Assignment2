@@ -1,3 +1,18 @@
+/* CSS for Page Zero */
+.page-zero-h1 {
+  padding-top: 2.5%;
+  padding-left: 7.5%;
+  color: #61dafb;
+}
+
+.page-zero-h3 {
+  text-align: justify;
+  max-width: 1150px;
+  padding-top: 0.5%;
+  padding-left: 10%;
+  color: #deebf8;
+}
+
 /* CSS for Page One */
 .page-one-container {
   /* background-color: grey; */
@@ -7,13 +22,13 @@
 
 .page-one-left {
   width: 50%;
-  border-right: 2px solid black;
+  border-right: 2px solid #deebf8;
 }
 
 .au-map-area {
   width: 50vw;
   height: 44vh;
-  border-bottom: 2px solid black;
+  border-bottom: 2px solid #deebf8;
 }
 
 .au-map-container {
@@ -21,6 +36,7 @@
   top: 1vw;
   width: 45vw;
   height: 40vh;
+  border-radius: 10px;
 }
 
 .tw-chart-area {
@@ -29,12 +45,14 @@
 }
 
 .tw-text-area {
-  height: 45vh;
+  height: 43vh;
   width: 100%;
 }
 
 .tw-text-para {
+  color: #deebf8;
   text-align: justify;
+  font-weight: bold;
   width: 75%;
   padding-left: 7.5vw;
   padding-top: 15vh;
@@ -53,13 +71,14 @@
 
 .mental-chart {
   padding-left: 12.5vw;
-  height: 44vh;
-  border-bottom: 2px solid black;
+  height: 43vh;
+  padding-bottom: 1vh;
+  border-bottom: 2px solid #deebf8;
 }
 
 .non-mental-chart {
   padding-left: 12.5vw;
-  height: 45vh;
+  height: 43vh;
 }
 
 /* CSS for Page Two */
@@ -71,12 +90,13 @@
 
 .vic-map-area {
   width: 50%;
-  border-right: 2px solid black;
+  border-right: 2px solid #deebf8;
 }
 
 .vic-h3 {
-  padding-top: 5%;
+  padding-top: 2.5%;
   padding-left: 15%;
+  color: #61dafb;
 }
 
 .vic-map-container {
@@ -84,6 +104,7 @@
   top: 2.5%;
   width: 65%;
   height: 65vh;
+  border-radius: 10px;
 }
 
 .sudo-area {
@@ -95,5 +116,11 @@
 }
 
 .sudo-para {
-  padding-top: 15%;
+  display: justify;
+  max-width: 600px;
+  font-size: 12px;
+  padding-top: 2.5%;
+  padding-left: 7.5%;
+  /* padding-top: 25%; */
+  color: #deebf8;
 }

@@ -94,15 +94,20 @@ export default function PopupChart(props) {
       plugins: {
         legend: {
           position: "top",
+          labels: {
+            color: "#deebf8",
+          },
         },
         title: {
           display: true,
+          color: "#61dafb",
           text: props.gccName + " - Twitter Dataset Pie Chart",
         },
         datalabels: {
           anchor: "end",
           align: "start",
           offset: 1.5,
+          color: "#deebf8",
           formatter: (value, ctx) => {
             return (value * 100).toString().substring(0, 2) + "%";
           },

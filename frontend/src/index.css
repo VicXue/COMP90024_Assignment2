@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #333d4e;
 }
 
 code {
@@ -17,22 +18,30 @@ header {
   justify-content: space-around;
   align-items: center;
   height: 10vh;
-  border-bottom: 2px solid black;
+  /* border-bottom: 2px solid black; */
+  background-color: #21222a;
   /* box-shadow: 2px 2px 2px 2px  rgba(60, 60, 60, 0.4); */
+}
+
+header .team-name {
+  color: #61dafb;
+  font-size: 20px;
 }
 
 header .display-options {
   display: flex;
   align-items: center;
   justify-content: space-around;
+  font-size: 16px;
 }
 
 .display-options .option {
+  font-weight: bold;
   padding: 0 15px;
   text-decoration: none;
-  color: #000000;
+  color: #deebf8;
 }
-
+/* 
 .vic-sidebar {
   background-color: rgba(35, 55, 75, 0.9);
   color: #fff;
@@ -44,13 +53,13 @@ header .display-options {
   left: 9vw;
   margin: 12px;
   border-radius: 4px;
-}
+}*/
 
 .au-sidebar {
   background-color: rgba(35, 55, 75, 0.9);
-  color: #fff;
+  color: #deebf8;
   padding: 6px 12px;
-  font-family: monospace;
+  font-weight: bold;
   z-index: 1;
   position: absolute;
   top: 12vh;

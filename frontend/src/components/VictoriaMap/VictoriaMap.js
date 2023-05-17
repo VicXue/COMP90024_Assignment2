@@ -180,10 +180,14 @@ function VictoriaMap() {
         Esitmated percentage of people with mental health problems <br /> in
         different LGA sections in Victoria
       </h3>
-      <div className="vic-sidebar">
+      {/* <div className="vic-sidebar">
         Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
-      </div>
+      </div> */}
       <div ref={mapContainer} className="vic-map-container" />
+      <p className="sudo-para">
+        Source:
+        Phidu(https://phidu.torrens.edu.au/social-health-atlases/data-archive/data-archive-social-health-atlases-of-australia)
+      </p>
     </div>
   );
 }

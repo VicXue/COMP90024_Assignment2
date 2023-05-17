@@ -25,19 +25,56 @@ ChartJS.register(
 
 export const options = {
   responsive: true,
+  scales: {
+    x: {
+      type: "category",
+      ticks: {
+        color: "#deebf8",
+        font: {
+          weight: "bold",
+        },
+      },
+      // grid: {
+      //   display: true,
+      //   color: "#deebf8",
+      //   lineWidth: 1,
+      // },
+    },
+    y: {
+      type: "linear",
+      ticks: {
+        color: "#deebf8",
+        font: {
+          weight: "bold",
+        },
+      },
+      // grid: {
+      //   display: true,
+      //   color: "#deebf8",
+      //   lineWidth: 1,
+      // },
+    },
+  },
   plugins: {
     legend: {
       position: "top",
+      labels: {
+        color: "#deebf8",
+      },
     },
     title: {
       display: true,
       font: { size: 28 },
+      color: "#61dafb",
       text: "Recurrent expenditure hisotry in mental health in VIC",
     },
+
     datalabels: {
       anchor: "end",
       align: "end",
       offset: 0,
+      font: { weight: "bold" },
+      color: "#61dafb",
       formatter: (value, ctx) => {
         return (value / 1000).toFixed(0) + "K";
       },
@@ -50,16 +87,16 @@ function LineChart() {
   const [vicData, setVicData] = useState(null);
   const [chartData, setChartData] = useState(null);
   const newLabels = [
-    "2010-2011",
-    "2011-2012",
-    "2012-2013",
-    "2013-2014",
-    "2014-2015",
-    "2015-2016",
-    "2017-2018",
-    "2018-2019",
-    "2019-2020",
-    "2020-2021",
+    "2010-11",
+    "2011-12",
+    "2012-13",
+    "2013-14",
+    "2014-15",
+    "2015-16",
+    "2017-18",
+    "2018-19",
+    "2019-20",
+    "2020-21",
   ];
 
   useEffect(() => {
@@ -123,7 +160,19 @@ function LineChart() {
       {chartData ? (
         <div>
           <Line className="line-chart" options={options} data={chartData} />
-          <p className="sudo-para"> Source: ?????????????????????</p>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <p className="sudo-para">
+            {" "}
+            Source: Government Expense of Mental Health
+            (https://www.aihw.gov.au/mental-health/topic-areas/expenditure)
+          </p>
         </div>
       ) : null}
     </div>
