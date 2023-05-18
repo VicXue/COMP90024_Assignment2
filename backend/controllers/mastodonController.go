@@ -14,7 +14,7 @@ import (
 // @Tags mastodon
 // @Accept json
 // @Produce json
-// @Success 200 {string} getMastodonMentalCount
+// @Success 200 {string} GetMastodonMentalCount
 // @Router /mastodon/mental/count [get]
 func GetMastodonMentalCount(c *gin.Context) {
 	url := fmt.Sprintf(
@@ -33,7 +33,7 @@ func GetMastodonMentalCount(c *gin.Context) {
 // @Tags mastodon
 // @Accept json
 // @Produce json
-// @Success 200 {string} getMastodonMentalOutput
+// @Success 200 {string} GetMastodonMentalOutput
 // @Router /mastodon/mental/output [get]
 func GetMastodonMentalOutput(c *gin.Context) {
 	url := fmt.Sprintf(
@@ -52,7 +52,7 @@ func GetMastodonMentalOutput(c *gin.Context) {
 // @Tags mastodon
 // @Accept json
 // @Produce json
-// @Success 200 {string} getMastodonNonMentalCount
+// @Success 200 {string} GetMastodonNonMentalCount
 // @Router /mastodon/non-mental/count [get]
 func GetMastodonNonMentalCount(c *gin.Context) {
 	url := fmt.Sprintf(
@@ -71,7 +71,7 @@ func GetMastodonNonMentalCount(c *gin.Context) {
 // @Tags mastodon
 // @Accept json
 // @Produce json
-// @Success 200 {string} getMastodonNonMentalOutput
+// @Success 200 {string} GetMastodonNonMentalOutput
 // @Router /mastodon/non-mental/output [get]
 func GetMastodonNonMentalOutput(c *gin.Context) {
 	url := fmt.Sprintf(

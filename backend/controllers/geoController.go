@@ -14,7 +14,7 @@ import (
 // @Tags geography
 // @Accept json
 // @Produce json
-// @Success 200 {string} getGeographyGCCData
+// @Success 200 {string} GetGeographyGCCData
 // @Router /geography/gcc [get]
 func GetGeographyGCCData(c *gin.Context) {
 	url := fmt.Sprintf(
@@ -33,7 +33,7 @@ func GetGeographyGCCData(c *gin.Context) {
 // @Tags geography
 // @Accept json
 // @Produce json
-// @Success 200 {string} getGeographyLGAData
+// @Success 200 {string} GetGeographyLGAData
 // @Router /geography/lga [get]
 func GetGeographyLGAData(c *gin.Context) {
 	url := fmt.Sprintf(
