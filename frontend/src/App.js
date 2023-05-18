@@ -1,43 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
-import React, { useEffect, useState } from "react"
+// import logo from './logo.svg';
+import PageOne from "./components/PageOne";
+import PageTwo from "./components/PageTwo";
+import PageZero from "./components/PageZero";
+import NavBar from "./components/NavBar/NavBar";
+
+import React, { useEffect, useState } from "react";
+import { Route, Routes } from "react-router-dom";
+
+import "./App.css";
 
 function App() {
-  const [orders, setOrders] = useState([])
-
-  const fetchData = () => {
-    fetch(`http://${process.env.REACT_APP_BACKEND_API_HOST}:8080/api/v1/example/fetchdocs`)
-      .then(response => {
-        return response.json()
-      })
-      .then(data => {
-        setOrders(data)
-      })
-  }
-
-  useEffect(() => {
-    fetchData()
-  }, [])
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <div>
-          {orders}
-        </div>
-      </header>
+    <div>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<PageZero />} />
+        <Route path="/PageOne" element={<PageOne />} />
+        <Route path="/PageTwo" element={<PageTwo />} />
+      </Routes>
     </div>
   );
 }

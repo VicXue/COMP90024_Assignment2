@@ -1,0 +1,128 @@
+/* CSS for Page Zero */
+.page-zero-h1 {
+  padding-top: 2.5%;
+  padding-left: 7.5%;
+  color: #61dafb;
+}
+
+.page-zero-h3 {
+  text-align: justify;
+  max-width: 1150px;
+  padding-top: 0.5%;
+  padding-left: 10%;
+  color: #deebf8;
+}
+
+/* CSS for Page One */
+.page-one-container {
+  /* background-color: grey; */
+  display: flex;
+  height: 90vh;
+}
+
+.page-one-left {
+  width: 50%;
+  border-right: 2px solid #deebf8;
+}
+
+.au-map-area {
+  width: 50vw;
+  height: 44vh;
+  border-bottom: 2px solid #deebf8;
+}
+
+.au-map-container {
+  left: 2.5vw;
+  top: 1vw;
+  width: 45vw;
+  height: 40vh;
+  border-radius: 10px;
+}
+
+.tw-chart-area {
+  height: 45vh;
+  width: 100%;
+}
+
+.tw-text-area {
+  height: 43vh;
+  width: 100%;
+}
+
+.tw-text-para {
+  color: #deebf8;
+  text-align: justify;
+  font-weight: bold;
+  width: 75%;
+  padding-left: 7.5vw;
+  padding-top: 15vh;
+}
+
+.popup-chart {
+  padding-left: 12.5vw;
+  height: 43vh;
+  width: 45%;
+}
+
+.page-one-right {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+.mental-chart {
+  padding-left: 12.5vw;
+  height: 43vh;
+  padding-bottom: 1vh;
+  border-bottom: 2px solid #deebf8;
+}
+
+.non-mental-chart {
+  padding-left: 12.5vw;
+  height: 43vh;
+  width: 45%;
+}
+
+/* CSS for Page Two */
+.page-two-container {
+  /* background-color: aquamarine; */
+  display: flex;
+  height: 90vh;
+}
+
+.vic-map-area {
+  width: 50%;
+  border-right: 2px solid #deebf8;
+}
+
+.vic-h3 {
+  padding-top: 2.5%;
+  padding-left: 15%;
+  color: #61dafb;
+}
+
+.vic-map-container {
+  left: 17.5%;
+  top: 2.5%;
+  width: 65%;
+  height: 65vh;
+  border-radius: 10px;
+}
+
+.sudo-area {
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+  padding-top: 11vh;
+  padding-left: 2.5vw;
+}
+
+.sudo-para {
+  display: justify;
+  max-width: 600px;
+  font-size: 12px;
+  padding-top: 2.5%;
+  padding-left: 7.5%;
+  /* padding-top: 25%; */
+  color: #deebf8;
+}
