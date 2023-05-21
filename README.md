@@ -15,6 +15,7 @@ To deploy this project run:
 - You would need the `id_rsa` ssh private key in the `playbook` folder, if you want to deploy the playbook with a clean slate. 
 - You would need to replace the `ansible_become_pass` variable in the `inventory/inventory.ini` file with your sudo password. 
 - You would need to set up your MRC password and provide it upon the input prompt when executing the script.
+- You would need to provide the Ansible Vault password if the depolyed service has encrypted variables.
 
 p.s. Due to the intrinsics of docker swarm, the CouchDB cluster may not finish its setup sometimes. The deployment process may fail or throw errors. Let me know if that happens. 
 
