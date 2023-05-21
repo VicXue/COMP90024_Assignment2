@@ -95,13 +95,15 @@ export default function PopupChart(props) {
         legend: {
           position: "top",
           labels: {
+            font: { size: 10 },
             color: "#deebf8",
           },
         },
         title: {
           display: true,
+          font: { size: 16 },
           color: "#61dafb",
-          text: props.gccName + " - Twitter Dataset Pie Chart",
+          text: props.gccName + " - Twitter Dataset",
         },
         datalabels: {
           anchor: "end",
