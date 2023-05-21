@@ -19,7 +19,7 @@ export const options = {
       display: true,
       font: { size: 16 },
       color: "#61dafb",
-      text: "Mastodon Mental Dataset",
+      text: "Mastodon Mental Dataset (Worldwide)",
     },
     datalabels: {
       anchor: "end",

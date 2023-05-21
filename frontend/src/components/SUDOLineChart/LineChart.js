@@ -66,7 +66,7 @@ export const options = {
       display: true,
       font: { size: 28 },
       color: "#61dafb",
-      text: "Recurrent expenditure hisotry in mental health in VIC",
+      text: "Recurrent Expenditure History in Mental Health in VIC",
     },
 
     datalabels: {
