@@ -34,7 +34,7 @@ p.s. Due to the intrinsics of docker swarm, the CouchDB cluster may not finish i
 - Frontend
     - [x] Elaboration
     - [x] Docker Swarm Deployment
-- Anaylser/Twitter Data Pre-processor 
+- Analyser/Twitter Data Pre-processor 
     - [x] Elaboration
     - [x] Development
     
@@ -48,6 +48,7 @@ graph TD;
 Frontend --> Backend;
 Backend--> CouchDB;
 Harvester --> CouchDB;
+Analyser --> CouchDB;
 ```
 Frontend, Backend and Harvester all have two replicas.
 
