@@ -15,6 +15,7 @@ To deploy this project run:
 - You would need the `id_rsa` ssh private key in the `playbook` folder, if you want to deploy the playbook with a clean slate. 
 - You would need to replace the `ansible_become_pass` variable in the `inventory/inventory.ini` file with your sudo password. 
 - You would need to set up your MRC password and provide it upon the input prompt when executing the script.
+- You would need to provide the Ansible Vault password if the depolyed service has encrypted variables.
 
 p.s. Due to the intrinsics of docker swarm, the CouchDB cluster may not finish its setup sometimes. The deployment process may fail or throw errors. Let me know if that happens. 
 
@@ -23,9 +24,7 @@ p.s. Due to the intrinsics of docker swarm, the CouchDB cluster may not finish i
 - CouchDB
     - [x] Docker Swarm Deployment
     - [x] Photon
-    - [x] Secret Hiding via Ansible Vault.
-    
-          DB Admin credentials are open in the repo, may need to update it to use ansible vault, but it's low priority for now.
+    - [x] Secret Hiding via Ansible Vault.    
 - Harvester
     - [x] Elaboration
     - [x] Docker Swarm Deployment
@@ -35,7 +34,7 @@ p.s. Due to the intrinsics of docker swarm, the CouchDB cluster may not finish i
 - Frontend
     - [x] Elaboration
     - [x] Docker Swarm Deployment
-- Analyser
+- Analyser/Twitter Data Pre-processor 
     - [x] Elaboration
     - [x] Development
     
@@ -49,9 +48,8 @@ graph TD;
 Frontend --> Backend;
 Backend--> CouchDB;
 Harvester --> CouchDB;
+Analyser --> CouchDB;
 ```
 Frontend, Backend and Harvester all have two replicas.
-
-Some thrid party libraries (like `ibmcloudant` in harvester) are installed for demonstration and testing purposed. If they don't perform or lack usability, feel free to find other options. Let me know if you want to change them or need more packages. 
 
 If you are not on campus and want to deploy the playbook or play with the services, use the AnyConnect VPN.
