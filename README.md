@@ -53,6 +53,4 @@ Harvester --> CouchDB;
 ```
 Frontend, Backend and Harvester all have two replicas.
 
-Some thrid party libraries (like `ibmcloudant` in harvester) are installed for demonstration and testing purposed. If they don't perform or lack usability, feel free to find other options. Let me know if you want to change them or need more packages. 
-
 If you are not on campus and want to deploy the playbook or play with the services, use the AnyConnect VPN.
